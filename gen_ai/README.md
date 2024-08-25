@@ -3,7 +3,22 @@ The folder containing examples for the generative AI.
 LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain
 
 
-## content
+## Content
+
+### deeplearning_01
+Adopted examples from [Building Systems with the ChatGPT API](https://learn.deeplearning.ai/courses/chatgpt-building-system/) 
+[deeplearning.ai](https://learn.deeplearning.ai)course\
+Main topics:
+- how an LLM works
+- tokenizer and why it can't reverse lollipop.
+- methods for evaluating user inputs to ensure the quality and safety of the system.
+- chain of thought reasoning 
+- splitting tasks into subtasks with chain prompts
+- checking outputs before showing them to users
+- methods for evaluating the system over time so as to monitor and improve its performance
+
+Python, LLM, OpenAI API, Chain of Thought Reasoning, Chaining Prompts, Evaluation\
+OpenAI: OpenAI completions API, OpenAI Moderation API,  OpenAI API key
 
 ### embeding_hello_world
 
