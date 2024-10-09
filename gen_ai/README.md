@@ -30,7 +30,7 @@ Python, Embeddings, LLM, OpenAI API\
 OpenAI: client, LLMs 'text-embedding-3-small', OpenAI API key
 
 
-### rag_albert_einstein**
+### rag_albert_einstein
 
 RAG Albert Einstein example
 
@@ -42,3 +42,14 @@ Use a local Qdrant Vector DB to generate answers to questions using an OpenAI's 
 RAG, embeddings, LLM, Vector DB\
 Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant, OpenAI\
 OpenAI: client, LLMs 'text-embedding-3-small' and 'gpt-3.5-turbo-instruct', OpenAI API key
+
+### text_and_image
+Multimodal (text + image) LLM capabilities.
+
+- Using the OpenAI HTTP call.
+- Using the OpenAI Python Client. 
+- Image is passed as a URL in WEB.
+- Image is passed as in request base64 URL.
+
+Python, LLM, OpenAI API\
+OpenAI: client, models  "gpt-4o-mini" "gpt-4o", OpenAI API key
