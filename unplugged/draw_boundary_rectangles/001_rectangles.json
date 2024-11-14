@@ -1,0 +1,72 @@
+{
+  "results": [
+    {
+      "label": "Incident Short Description",
+      "coordinates": { "x1": 85, "y1": 160, "x2": 580, "y2": 220 }
+    },
+    {
+      "label": "Incident Description",
+      "coordinates": { "x1": 85, "y1": 225, "x2": 580, "y2": 285 }
+    },
+    {
+      "label": "Incident Number",
+      "coordinates": { "x1": 85, "y1": 290, "x2": 300, "y2": 350 }
+    },
+    {
+      "label": "Incident State",
+      "coordinates": { "x1": 310, "y1": 290, "x2": 580, "y2": 350 }
+    },
+    {
+      "label": "Caller",
+      "coordinates": { "x1": 85, "y1": 355, "x2": 300, "y2": 415 }
+    },
+    {
+      "label": "Impact",
+      "coordinates": { "x1": 310, "y1": 355, "x2": 580, "y2": 415 }
+    },
+    {
+      "label": "Urgency",
+      "coordinates": { "x1": 85, "y1": 420, "x2": 300, "y2": 480 }
+    },
+    {
+      "label": "Priority",
+      "coordinates": { "x1": 310, "y1": 420, "x2": 580, "y2": 480 }
+    },
+    {
+      "label": "Channel",
+      "coordinates": { "x1": 85, "y1": 485, "x2": 300, "y2": 545 }
+    },
+    {
+      "label": "Category",
+      "coordinates": { "x1": 310, "y1": 485, "x2": 580, "y2": 545 }
+    },
+    {
+      "label": "Comments",
+      "coordinates": { "x1": 620, "y1": 160, "x2": 1120, "y2": 220 }
+    },
+    {
+      "label": "Work Notes",
+      "coordinates": { "x1": 620, "y1": 230, "x2": 1120, "y2": 290 }
+    },
+    {
+      "label": "Email To",
+      "coordinates": { "x1": 620, "y1": 295, "x2": 1120, "y2": 355 }
+    },
+    {
+      "label": "Email Subject",
+      "coordinates": { "x1": 620, "y1": 360, "x2": 1120, "y2": 420 }
+    },
+    {
+      "label": "Email Body",
+      "coordinates": { "x1": 620, "y1": 425, "x2": 1120, "y2": 545 }
+    },
+    {
+      "label": "Caller Information",
+      "coordinates": { "x1": 1130, "y1": 160, "x2": 1280, "y2": 310 }
+    },
+    {
+      "label": "Assigned to",
+      "coordinates": { "x1": 1130, "y1": 320, "x2": 1280, "y2": 420 }
+    }
+  ]
+}

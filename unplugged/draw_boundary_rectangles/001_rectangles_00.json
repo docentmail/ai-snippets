@@ -1,0 +1,76 @@
+{
+    "results": [
+      {
+        "label": "Short description",
+        "coordinates": {"x1": 230, "y1": 180, "x2": 580, "y2": 230}
+      },
+      {
+        "label": "Description",
+        "coordinates": {"x1": 230, "y1": 240, "x2": 580, "y2": 290}
+      },
+      {
+        "label": "Number",
+        "coordinates": {"x1": 230, "y1": 300, "x2": 580, "y2": 350}
+      },
+      {
+        "label": "Caller",
+        "coordinates": {"x1": 230, "y1": 360, "x2": 580, "y2": 410}
+      },
+      {
+        "label": "Location",
+        "coordinates": {"x1": 230, "y1": 420, "x2": 580, "y2": 470}
+      },
+      {
+        "label": "Channel",
+        "coordinates": {"x1": 230, "y1": 480, "x2": 580, "y2": 530}
+      },
+      {
+        "label": "Category",
+        "coordinates": {"x1": 230, "y1": 540, "x2": 580, "y2": 590}
+      },
+      {
+        "label": "State",
+        "coordinates": {"x1": 600, "y1": 300, "x2": 780, "y2": 350}
+      },
+      {
+        "label": "Impact",
+        "coordinates": {"x1": 600, "y1": 360, "x2": 780, "y2": 410}
+      },
+      {
+        "label": "Urgency",
+        "coordinates": {"x1": 600, "y1": 420, "x2": 780, "y2": 470}
+      },
+      {
+        "label": "Priority",
+        "coordinates": {"x1": 600, "y1": 480, "x2": 780, "y2": 530}
+      },
+      {
+        "label": "Comments",
+        "coordinates": {"x1": 900, "y1": 180, "x2": 1180, "y2": 230}
+      },
+      {
+        "label": "Work notes (Private)",
+        "coordinates": {"x1": 900, "y1": 240, "x2": 1180, "y2": 290}
+      },
+      {
+        "label": "Email To",
+        "coordinates": {"x1": 900, "y1": 300, "x2": 1180, "y2": 350}
+      },
+      {
+        "label": "Subject",
+        "coordinates": {"x1": 900, "y1": 360, "x2": 1180, "y2": 410}
+      },
+      {
+        "label": "Compose email",
+        "coordinates": {"x1": 900, "y1": 420, "x2": 1180, "y2": 570}
+      },
+      {
+        "label": "Caller Information",
+        "coordinates": {"x1": 1200, "y1": 180, "x2": 1400, "y2": 330}
+      },
+      {
+        "label": "Assigned to",
+        "coordinates": {"x1": 1200, "y1": 340, "x2": 1400, "y2": 440}
+      }
+    ]
+  }

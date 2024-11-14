@@ -1,0 +1,356 @@
+gradient boosting: trainig. Estimators=  10 max_depth= 2
+0.703845172719
+
+gradient boosting: trainig. Estimators=  30 max_depth= 2
+0.712421789165
+
+gradient boosting: trainig. Estimators=  30 max_depth= 4
+0.715577928216
+
+gradient boosting: trainig. Estimators=  60 max_depth= 4
+0.718711824114
+
+gradient boosting: trainig. Estimators=  60 max_depth= 6
+0.719855107983
+
+gradient boosting: trainig. Estimators=  120 max_depth= 6
+0.722038617167
+
+gradient boosting: trainig. Estimators=  120 max_depth= 8
+0.717131392687
+
+gradient boosting: trainig. Estimators=  120 max_depth= 4
+0.722611854863
+
+gradient boosting: trainig. Estimators=  120 max_depth= 5
+0.723343393486
+
+gradient boosting: trainig. Estimators=  240 max_depth= 6
+0.722157014573
+
+gradient boosting: trainig. Estimators=  480 max_depth= 6
+0.720117263451
+
+gradient boosting: trainig. Estimators=  800 max_depth= 6
+0.716943132097
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Start _ all 2016-04-29 01:39:19.147000
+modify_dayaframe_01 (Before). parDataFrame (97230, 108)
+modify_dayaframe_01 (After). parDataFrame (97230, 107)
+modify_dayaframe_03 (Before). parDataFrame (97230, 107)
+modify_dayaframe_03 (After). rezDataFrame (97230, 121)
+modify_dayaframe_02 (Before). parDataFrame (97230, 121)
+modify_dayaframe_02 (After). rezDataFrame (97230, 193)
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 97230 entries, 0 to 114406
+Columns: 193 entries, start_time to d_itemspwr2
+dtypes: float64(83), int64(110)
+memory usage: 143.9 MB
+None
+remove_result_columns (Before): shape (97230, 193)
+remove_result_columns (After): shape (97230, 187)
+Before
+NaNs = 173534
+not NaNs = 18008476
+after
+NaNs = 0
+not NaNs = 18182010
+--Done prepare train 2016-04-29 01:43:45.183000
+modify_dayaframe_01 (Before). parDataFrame (17177, 102)
+modify_dayaframe_01 (After). parDataFrame (17177, 101)
+modify_dayaframe_03 (Before). parDataFrame (17177, 101)
+modify_dayaframe_03 (After). rezDataFrame (17177, 115)
+modify_dayaframe_02 (Before). parDataFrame (17177, 115)
+modify_dayaframe_02 (After). rezDataFrame (17177, 187)
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 17177 entries, 6 to 114398
+Columns: 187 entries, start_time to d_itemspwr2
+dtypes: float64(83), int64(104)
+memory usage: 24.6 MB
+None
+Before
+NaNs = 30866
+not NaNs = 3181233
+after
+NaNs = 0
+not NaNs = 3212099
+--Done prepare test 2016-04-29 01:44:32.361000
+############## gradient boosting: trainig. Estimators=  10 max_depth= 2
+---Start train 2016-04-29 01:44:32.361000
+crossvalidate_estimators: start  2016-04-29 01:44:32.361000
+calculate_scores_for_estimators: start  2016-04-29 01:44:32.361000
+score_mean= 0.703845172719 scores_std= 0.0034124392952 n_estimators = 10 max_depth= 2 Time: 0:00:27.343000
+calculate_scores_for_estimators: finish  2016-04-29 01:44:59.704000
+crossvalidate_estimators: finish  2016-04-29 01:44:59.704000
+Done2 2016-04-29 01:44:59.704000
+<type 'list'>
+0.703845172719
+max_score = 0.703845172719 max_index= 0 best_n_estimators= 10 best_max_depth= 2
+Done3 2016-04-29 01:45:15.366000
+Минимум предсказанных вероятностей = 0.350714570525
+Максимум предсказанных вероятностей = 0.682046857582
+Done4 2016-04-29 01:45:16.237000
+--- Start test  2016-04-29 01:45:16.237000
+Минимум предсказанных вероятностей = 0.350714570525
+Максимум предсказанных вероятностей = 0.682046857582
+Done 2016-04-29 01:45:16.406000
+############## gradient boosting: trainig. Estimators=  30 max_depth= 2
+---Start train 2016-04-29 01:45:16.406000
+crossvalidate_estimators: start  2016-04-29 01:45:16.406000
+calculate_scores_for_estimators: start  2016-04-29 01:45:16.406000
+score_mean= 0.712421789165 scores_std= 0.00336631117406 n_estimators = 30 max_depth= 2 Time: 0:01:01.194000
+calculate_scores_for_estimators: finish  2016-04-29 01:46:17.600000
+crossvalidate_estimators: finish  2016-04-29 01:46:17.601000
+Done2 2016-04-29 01:46:17.601000
+<type 'list'>
+0.712421789165
+max_score = 0.712421789165 max_index= 0 best_n_estimators= 30 best_max_depth= 2
+Done3 2016-04-29 01:46:57.962000
+Минимум предсказанных вероятностей = 0.189248414957
+Максимум предсказанных вероятностей = 0.838743760457
+Done4 2016-04-29 01:46:58.995000
+--- Start test  2016-04-29 01:46:58.995000
+Минимум предсказанных вероятностей = 0.189248414957
+Максимум предсказанных вероятностей = 0.838743760457
+Done 2016-04-29 01:46:59.189000
+############## gradient boosting: trainig. Estimators=  30 max_depth= 4
+---Start train 2016-04-29 01:46:59.189000
+crossvalidate_estimators: start  2016-04-29 01:46:59.189000
+calculate_scores_for_estimators: start  2016-04-29 01:46:59.189000
+score_mean= 0.715577928216 scores_std= 0.00376055985821 n_estimators = 30 max_depth= 4 Time: 0:02:28.293000
+calculate_scores_for_estimators: finish  2016-04-29 01:49:27.482000
+crossvalidate_estimators: finish  2016-04-29 01:49:27.482000
+Done2 2016-04-29 01:49:27.482000
+<type 'list'>
+0.715577928216
+max_score = 0.715577928216 max_index= 0 best_n_estimators= 30 best_max_depth= 4
+Done3 2016-04-29 01:51:18.839000
+Минимум предсказанных вероятностей = 0.0991297250137
+Максимум предсказанных вероятностей = 0.899881170192
+Done4 2016-04-29 01:51:20.010000
+--- Start test  2016-04-29 01:51:20.010000
+Минимум предсказанных вероятностей = 0.103530347034
+Максимум предсказанных вероятностей = 0.899881170192
+Done 2016-04-29 01:51:20.211000
+############## gradient boosting: trainig. Estimators=  60 max_depth= 4
+---Start train 2016-04-29 01:51:20.211000
+crossvalidate_estimators: start  2016-04-29 01:51:20.211000
+calculate_scores_for_estimators: start  2016-04-29 01:51:20.211000
+score_mean= 0.718711824114 scores_std= 0.00352849754412 n_estimators = 60 max_depth= 4 Time: 0:04:33.617000
+calculate_scores_for_estimators: finish  2016-04-29 01:55:53.828000
+crossvalidate_estimators: finish  2016-04-29 01:55:53.828000
+Done2 2016-04-29 01:55:53.828000
+<type 'list'>
+0.718711824114
+max_score = 0.718711824114 max_index= 0 best_n_estimators= 60 best_max_depth= 4
+Done3 2016-04-29 01:59:23.040000
+Минимум предсказанных вероятностей = 0.0549303403057
+Максимум предсказанных вероятностей = 0.950572435427
+Done4 2016-04-29 01:59:24.568000
+--- Start test  2016-04-29 01:59:24.568000
+Минимум предсказанных вероятностей = 0.0665038810324
+Максимум предсказанных вероятностей = 0.954739708412
+Done 2016-04-29 01:59:24.865000
+############## gradient boosting: trainig. Estimators=  60 max_depth= 6
+---Start train 2016-04-29 01:59:24.865000
+crossvalidate_estimators: start  2016-04-29 01:59:24.865000
+calculate_scores_for_estimators: start  2016-04-29 01:59:24.865000
+score_mean= 0.719855107983 scores_std= 0.00322167910106 n_estimators = 60 max_depth= 6 Time: 0:10:08.071000
+calculate_scores_for_estimators: finish  2016-04-29 02:09:32.936000
+crossvalidate_estimators: finish  2016-04-29 02:09:32.937000
+Done2 2016-04-29 02:09:32.937000
+<type 'list'>
+0.719855107983
+max_score = 0.719855107983 max_index= 0 best_n_estimators= 60 best_max_depth= 6
+Done3 2016-04-29 02:17:59.490000
+Минимум предсказанных вероятностей = 0.0345838722794
+Максимум предсказанных вероятностей = 0.96119284918
+Done4 2016-04-29 02:18:01.307000
+--- Start test  2016-04-29 02:18:01.307000
+Минимум предсказанных вероятностей = 0.0464287530598
+Максимум предсказанных вероятностей = 0.956767505629
+Done 2016-04-29 02:18:01.610000
+############## gradient boosting: trainig. Estimators=  120 max_depth= 6
+---Start train 2016-04-29 02:18:01.610000
+crossvalidate_estimators: start  2016-04-29 02:18:01.610000
+calculate_scores_for_estimators: start  2016-04-29 02:18:01.610000
+score_mean= 0.722038617167 scores_std= 0.00319694090016 n_estimators = 120 max_depth= 6 Time: 0:18:45.064000
+calculate_scores_for_estimators: finish  2016-04-29 02:36:46.674000
+crossvalidate_estimators: finish  2016-04-29 02:36:46.674000
+Done2 2016-04-29 02:36:46.674000
+<type 'list'>
+0.722038617167
+max_score = 0.722038617167 max_index= 0 best_n_estimators= 120 best_max_depth= 6
+Done3 2016-04-29 02:52:51.606000
+Минимум предсказанных вероятностей = 0.0189312349605
+Максимум предсказанных вероятностей = 0.977224716205
+Done4 2016-04-29 02:52:54.313000
+--- Start test  2016-04-29 02:52:54.323000
+Минимум предсказанных вероятностей = 0.0335173733483
+Максимум предсказанных вероятностей = 0.969890675821
+Done 2016-04-29 02:52:54.820000
+############## gradient boosting: trainig. Estimators=  120 max_depth= 8
+---Start train 2016-04-29 02:52:54.820000
+crossvalidate_estimators: start  2016-04-29 02:52:54.820000
+calculate_scores_for_estimators: start  2016-04-29 02:52:54.820000
+score_mean= 0.717131392687 scores_std= 0.00319096657435 n_estimators = 120 max_depth= 8 Time: 0:42:15.264000
+calculate_scores_for_estimators: finish  2016-04-29 03:35:10.084000
+crossvalidate_estimators: finish  2016-04-29 03:35:10.084000
+Done2 2016-04-29 03:35:10.084000
+<type 'list'>
+0.717131392687
+max_score = 0.717131392687 max_index= 0 best_n_estimators= 120 best_max_depth= 8
+Done3 2016-04-29 04:16:00.494000
+Минимум предсказанных вероятностей = 0.0149074176934
+Максимум предсказанных вероятностей = 0.986909529577
+Done4 2016-04-29 04:16:03.491000
+--- Start test  2016-04-29 04:16:03.491000
+Минимум предсказанных вероятностей = 0.0236482287416
+Максимум предсказанных вероятностей = 0.980182902928
+Done 2016-04-29 04:16:04.019000
+Done _ all 2016-04-29 04:16:04.021000
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Start _ all 2016-04-29 04:59:00.062000
+modify_dayaframe_01 (Before). parDataFrame (97230, 108)
+modify_dayaframe_01 (After). parDataFrame (97230, 107)
+modify_dayaframe_03 (Before). parDataFrame (97230, 107)
+modify_dayaframe_03 (After). rezDataFrame (97230, 121)
+modify_dayaframe_02 (Before). parDataFrame (97230, 121)
+modify_dayaframe_02 (After). rezDataFrame (97230, 193)
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 97230 entries, 0 to 114406
+Columns: 193 entries, start_time to d_itemspwr2
+dtypes: float64(83), int64(110)
+memory usage: 143.9 MB
+None
+remove_result_columns (Before): shape (97230, 193)
+remove_result_columns (After): shape (97230, 187)
+Before
+NaNs = 173534
+not NaNs = 18008476
+after
+NaNs = 0
+not NaNs = 18182010
+--Done prepare train 2016-04-29 05:03:27.581000
+modify_dayaframe_01 (Before). parDataFrame (17177, 102)
+modify_dayaframe_01 (After). parDataFrame (17177, 101)
+modify_dayaframe_03 (Before). parDataFrame (17177, 101)
+modify_dayaframe_03 (After). rezDataFrame (17177, 115)
+modify_dayaframe_02 (Before). parDataFrame (17177, 115)
+modify_dayaframe_02 (After). rezDataFrame (17177, 187)
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 17177 entries, 6 to 114398
+Columns: 187 entries, start_time to d_itemspwr2
+dtypes: float64(83), int64(104)
+memory usage: 24.6 MB
+None
+Before
+NaNs = 30866
+not NaNs = 3181233
+after
+NaNs = 0
+not NaNs = 3212099
+--Done prepare test 2016-04-29 05:04:15.500000
+############## gradient boosting: trainig. Estimators=  120 max_depth= 4
+---Start train 2016-04-29 05:04:15.500000
+crossvalidate_estimators: start  2016-04-29 05:04:15.500000
+calculate_scores_for_estimators: start  2016-04-29 05:04:15.500000
+score_mean= 0.722611854863 scores_std= 0.00355157695532 n_estimators = 120 max_depth= 4 Time: 0:08:36.635000
+calculate_scores_for_estimators: finish  2016-04-29 05:12:52.135000
+crossvalidate_estimators: finish  2016-04-29 05:12:52.136000
+Done2 2016-04-29 05:12:52.136000
+<type 'list'>
+0.722611854863
+max_score = 0.722611854863 max_index= 0 best_n_estimators= 120 best_max_depth= 4
+Done3 2016-04-29 05:19:40.853000
+Минимум предсказанных вероятностей = 0.0386755891363
+Максимум предсказанных вероятностей = 0.973255188784
+Done4 2016-04-29 05:19:43.114000
+--- Start test  2016-04-29 05:19:43.115000
+Минимум предсказанных вероятностей = 0.051422328781
+Максимум предсказанных вероятностей = 0.967055701536
+Done 2016-04-29 05:19:43.532000
+############## gradient boosting: trainig. Estimators=  120 max_depth= 5
+---Start train 2016-04-29 05:19:43.533000
+crossvalidate_estimators: start  2016-04-29 05:19:43.533000
+calculate_scores_for_estimators: start  2016-04-29 05:19:43.533000
+score_mean= 0.723343393486 scores_std= 0.00336737407191 n_estimators = 120 max_depth= 5 Time: 0:13:19.358000
+calculate_scores_for_estimators: finish  2016-04-29 05:33:02.891000
+crossvalidate_estimators: finish  2016-04-29 05:33:02.891000
+Done2 2016-04-29 05:33:02.891000
+<type 'list'>
+0.723343393486
+max_score = 0.723343393486 max_index= 0 best_n_estimators= 120 best_max_depth= 5
+Done3 2016-04-29 05:43:24.540000
+Минимум предсказанных вероятностей = 0.027098937179
+Максимум предсказанных вероятностей = 0.975209695175
+Done4 2016-04-29 05:43:27.146000
+--- Start test  2016-04-29 05:43:27.146000
+Минимум предсказанных вероятностей = 0.0315088871407
+Максимум предсказанных вероятностей = 0.965760126901
+Done 2016-04-29 05:43:27.627000
+############## gradient boosting: trainig. Estimators=  240 max_depth= 6
+---Start train 2016-04-29 05:43:27.627000
+crossvalidate_estimators: start  2016-04-29 05:43:27.627000
+calculate_scores_for_estimators: start  2016-04-29 05:43:27.627000
+score_mean= 0.722157014573 scores_std= 0.00353777407016 n_estimators = 240 max_depth= 6 Time: 0:35:36.255000
+calculate_scores_for_estimators: finish  2016-04-29 06:19:03.882000
+crossvalidate_estimators: finish  2016-04-29 06:19:03.882000
+Done2 2016-04-29 06:19:03.882000
+<type 'list'>
+0.722157014573
+max_score = 0.722157014573 max_index= 0 best_n_estimators= 240 best_max_depth= 6
+Done3 2016-04-29 06:49:34.711000
+Минимум предсказанных вероятностей = 0.0116367076351
+Максимум предсказанных вероятностей = 0.990591863657
+Done4 2016-04-29 06:49:39.282000
+--- Start test  2016-04-29 06:49:39.283000
+Минимум предсказанных вероятностей = 0.0184984766359
+Максимум предсказанных вероятностей = 0.983757106005
+Done 2016-04-29 06:49:40.087000
+############## gradient boosting: trainig. Estimators=  480 max_depth= 6
+---Start train 2016-04-29 06:49:40.088000
+crossvalidate_estimators: start  2016-04-29 06:49:40.088000
+calculate_scores_for_estimators: start  2016-04-29 06:49:40.088000
+score_mean= 0.720117263451 scores_std= 0.00350738293623 n_estimators = 480 max_depth= 6 Time: 1:08:35.689000
+calculate_scores_for_estimators: finish  2016-04-29 07:58:15.777000
+crossvalidate_estimators: finish  2016-04-29 07:58:15.778000
+Done2 2016-04-29 07:58:15.778000
+<type 'list'>
+0.720117263451
+max_score = 0.720117263451 max_index= 0 best_n_estimators= 480 best_max_depth= 6
+Done3 2016-04-29 08:58:40.669000
+Минимум предсказанных вероятностей = 0.00255963300789
+Максимум предсказанных вероятностей = 0.99605469577
+Done4 2016-04-29 08:58:48.783000
+--- Start test  2016-04-29 08:58:48.784000
+Минимум предсказанных вероятностей = 0.00907918324892
+Максимум предсказанных вероятностей = 0.994931100211
+Done 2016-04-29 08:58:50.316000
+############## gradient boosting: trainig. Estimators=  800 max_depth= 6
+---Start train 2016-04-29 08:58:50.317000
+crossvalidate_estimators: start  2016-04-29 08:58:50.317000
+calculate_scores_for_estimators: start  2016-04-29 08:58:50.317000
+score_mean= 0.716943132097 scores_std= 0.00318958343773 n_estimators = 800 max_depth= 6 Time: 1:53:29.133000
+calculate_scores_for_estimators: finish  2016-04-29 10:52:19.450000
+crossvalidate_estimators: finish  2016-04-29 10:52:19.450000
+Done2 2016-04-29 10:52:19.450000
+<type 'list'>
+0.716943132097
+max_score = 0.716943132097 max_index= 0 best_n_estimators= 800 best_max_depth= 6
+Done3 2016-04-29 12:31:08.988000
+Минимум предсказанных вероятностей = 0.000377571297432
+Максимум предсказанных вероятностей = 0.998753013408
+Done4 2016-04-29 12:31:22.202000
+--- Start test  2016-04-29 12:31:22.203000
+Минимум предсказанных вероятностей = 0.00676655365776
+Максимум предсказанных вероятностей = 0.997671231018
+Done 2016-04-29 12:31:24.576000
+Done _ all 2016-04-29 12:31:24.578000

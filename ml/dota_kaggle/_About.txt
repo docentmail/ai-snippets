@@ -1,0 +1,16 @@
+Machine learning in applied tasks
+
+In this module, we will summarize the course, recall the main stages of solving a data analysis problem. We will also analyze several tasks from applied areas to prepare for the final project.
+
+Machine learning in applied tasks
+Stages of data analysis
+Working with numerical features
+Working with categorical and text features
+Data preprocessing
+Quality assessment
+Algorithm review
+Final task
+Assignment: Project: predicting the winner in an online game
+Due April 10, 11:59 PM PDT
+Review Classmates: Project: predicting the winner in an online game
+Due April 13, 11:59 PM PDT

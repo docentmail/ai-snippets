@@ -1,0 +1,2172 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Optimization reservs\n",
+    "- average for градиенный бустинг и линейную регрессию\n",
+    "- убрать время начала и номер матча\n",
+    "- сделать чтобы все матчи начинались с 0. Без отрицательных времен\n",
+    "- продумать с пустыми значениями - их очень много\n",
+    "- first_blood_time', 'first_blood_team' - алгоритм понимает что это связка???? только время - (+) для одной команды и (-) для другой\n",
+    "- посчитать \"производительность\" команд каждую минуту. Может динамика поможет. \n",
+    "- покуртить ручки алгоритмов - может поможет\n",
+    "- добавить степени числовых признаков - выйти за линейность\n",
+    "- сколько -1 комнат в списке \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# functions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# annoying warnings disabling\n",
+    "\n",
+    "import warnings\n",
+    "warnings.filterwarnings(\"ignore\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "# global variables\n",
+    "heroes = [\n",
+    "    'r1_hero',\n",
+    "    'r2_hero',\n",
+    "    'r3_hero',\n",
+    "    'r4_hero',\n",
+    "    'r5_hero',\n",
+    "    'd1_hero',\n",
+    "    'd2_hero',\n",
+    "    'd3_hero',\n",
+    "    'd4_hero',\n",
+    "    'd5_hero'\n",
+    "]\n",
+    "fields_to_remove = [\n",
+    "    'r1_hero',\n",
+    "    'r2_hero',\n",
+    "    'r3_hero',\n",
+    "    'r4_hero',\n",
+    "    'r5_hero',\n",
+    "    'd1_hero',\n",
+    "    'd2_hero',\n",
+    "    'd3_hero',\n",
+    "    'd4_hero',\n",
+    "    'd5_hero',\n",
+    "    'lobby_type'\n",
+    "#    'start_time'\n",
+    "]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Удалите признаки, связанные с итогами матча (они помечены в описании данных как отсутствующие в тестовой выборке).\n",
+    "'''\n",
+    "Итог матча (данные поля отсутствуют в тестовой выборке, поскольку содержат информацию, выходящую за пределы первых 5 минут матча)\n",
+    "duration: длительность\n",
+    "radiant_win: 1, если победила команда Radiant, 0 — иначе\n",
+    "Состояние башен и барраков к концу матча (см. описание полей набора данных)\n",
+    "tower_status_radiant\n",
+    "tower_status_dire\n",
+    "barracks_status_radiant\n",
+    "barracks_status_dire\n",
+    "'''\n",
+    "\n",
+    "# usage: match_info, y = remove_result_columns(features)\n",
+    "def remove_result_columns(the_features):\n",
+    "    rez_col_names = [\n",
+    "    'duration',\n",
+    "    'radiant_win',\n",
+    "    'tower_status_radiant',\n",
+    "    'tower_status_dire',\n",
+    "    'barracks_status_radiant',\n",
+    "    'barracks_status_dire'\n",
+    "    ]\n",
+    "    # res_info = features[rez_col_names]\n",
+    "    return the_features.drop(rez_col_names, axis=1), the_features['radiant_win']\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# remove initial heroes and lobbies columns\n",
+    "def remove_initial_heroes_and_lobbies(parX):\n",
+    "    print parX.shape, type(parX)\n",
+    "    X_categor_removed= parX.drop( fields_to_remove, axis=1)\n",
+    "    print X_categor_removed.shape, type(X_categor_removed)\n",
+    "    return X_categor_removed\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "Замените пропуски на нули с помощью функции fillna(). На самом деле этот способ является предпочтительным для логистической регрессии, поскольку он позволит пропущенному значению не вносить никакого вклада в предсказание. Для деревьев часто лучшим вариантом оказывается замена пропуска на очень большое или очень маленькое значение — в этом случае при построении разбиения вершины можно будет отправить объекты с пропусками в отдельную ветвь дерева. Также есть и другие подходы — например, замена пропуска на среднее значение признака. Мы не требуем этого в задании, но при желании попробуйте разные подходы к обработке пропусков и сравните их между собой.\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Замените пропуски на нули с помощью функции fillna().\n",
+    "def replace_skpped_values_with_0(theX):\n",
+    "    print 'Before'\n",
+    "    print 'NaNs =' ,np.count_nonzero(np.isnan(theX))\n",
+    "    print 'not NaNs =' ,np.count_nonzero(~np.isnan(theX))\n",
+    "    rez= theX.fillna(0)\n",
+    "    print 'after'\n",
+    "    print 'NaNs =' ,np.count_nonzero(np.isnan(rez))\n",
+    "    print 'not NaNs =' ,np.count_nonzero(~np.isnan(rez))\n",
+    "    return rez\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "2. Среди признаков в выборке есть категориальные, которые мы использовали как числовые, что вряд ли является хорошей идеей. Категориальных признаков в этой задаче одиннадцать: lobby_type и r1_hero, r2_hero, ..., r5_hero, d1_hero, d2_hero, ..., d5_hero. Уберите их из выборки, и проведите кросс-валидацию для логистической регрессии на новой выборке с подбором лучшего параметра регуляризации. Изменилось ли качество? Чем вы можете это объяснить?\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "# replace heroes with the bag of the words\n",
+    "def words_bag_of_heroes(theX):\n",
+    "    # calcule heroes range\n",
+    "    expected_num=113\n",
+    "    unique_heroes = np.unique(theX[heroes])\n",
+    "    if (max(unique_heroes)>expected_num):\n",
+    "        return 0 # throw exception here\n",
+    "    if (min(unique_heroes)<1):\n",
+    "        return 0 # throw exception here\n",
+    "    X_pick = np.zeros((theX.shape[0], expected_num))\n",
+    "    for i, match_id in enumerate(theX.index):\n",
+    "        for p in xrange(5):\n",
+    "            X_pick[i, theX.ix[match_id, 'r%d_hero' % (p+1)]-1] = 1\n",
+    "            X_pick[i, theX.ix[match_id, 'd%d_hero' % (p+1)]-1] = -1\n",
+    "    return X_pick\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "# добавим мешок слов по комнате\n",
+    "\n",
+    "'''id,name\n",
+    "-1,Invalid\n",
+    "0,Public matchmaking\n",
+    "1,Practice\n",
+    "2,Tournament\n",
+    "3,Tutorial\n",
+    "4,Co-op with bots\n",
+    "5,Team match\n",
+    "6,Solo Queue\n",
+    "7,Ranked\n",
+    "8,Solo Mid 1vs1\n",
+    "'''\n",
+    "        \n",
+    "#################################################################################################\n",
+    "def words_bag_of_rooms(theX):\n",
+    "    num_rooms = 10\n",
+    "    # check rooms range\n",
+    "    num_rooms_max = 8\n",
+    "    num_rooms_min = -1\n",
+    "    unique_lobbyes = np.unique(theX['lobby_type'])\n",
+    "    if (max(unique_lobbyes)>num_rooms_max):\n",
+    "        raise NameError(max(unique_lobbyes)+'too big')  \n",
+    "    if (min(unique_lobbyes) < num_rooms_min):\n",
+    "        raise NameError(max(unique_lobbyes)+'too small')\n",
+    "    # делаем мешок слов\n",
+    "    X_pick_room = np.zeros([theX.shape[0], num_rooms])   # !!! two (())\n",
+    "    for i, match_id in enumerate(theX.index):\n",
+    "        for p in xrange(10):\n",
+    "            X_pick_room[i, theX.ix[match_id, 'lobby_type']+1] = 1    \n",
+    "    return  X_pick_room       \n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# join X_pick heroes and rooms\n",
+    "def join_bags_rooms_and_heroes(parX_pick_heroes , parX_pick_rooms):\n",
+    "    print parX_pick_heroes.shape, parX_pick_rooms.shape\n",
+    "    rez=np.concatenate((parX_pick_heroes , parX_pick_rooms),  axis=1)\n",
+    "    print rez.shape\n",
+    "    return rez\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# add word bag to the DataSet\n",
+    "from scipy.sparse import hstack\n",
+    "def add_word_bag(parDataSet, parX_pick):\n",
+    "    print parDataSet.shape, type(parDataSet)\n",
+    "    print parX_pick.shape, type(parX_pick)\n",
+    "    X_joined = hstack([parDataSet,parX_pick]).toarray()\n",
+    "    print X_joined.shape, type(X_joined)\n",
+    "    return X_joined"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "<b>Важно</b>: не забывайте, что линейные алгоритмы чувствительны к масштабу признаков! Может пригодиться sklearn.preprocessing.StandartScaler.\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import StandardScaler\n",
+    "# usage\n",
+    "# ss = stdScaling_fit(X)\n",
+    "# X_std_scal = stdScaling_transform(X ,ss)\n",
+    "def stdScaling_fit(theX):\n",
+    "     return StandardScaler().fit(theX)\n",
+    "\n",
+    "def stdScaling_transform(theX, stdScaler):\n",
+    "     return stdScaler.transform(theX)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "# calculate C for logistic regression\n",
+    "from sklearn.grid_search import GridSearchCV\n",
+    "from sklearn.linear_model import LogisticRegression\n",
+    "from sklearn.cross_validation import KFold\n",
+    "import numpy as np\n",
+    "import datetime\n",
+    "\n",
+    "\n",
+    "def calculate_logreg_best_param(X_par, Y_par):\n",
+    "    start_time = datetime.datetime.now()\n",
+    "    param_grid = {'C': [0.00000000001, 0.0001, 0.001 ,0.01, 0.1, 1, 10, 100, 1000, 100000000] }\n",
+    "\n",
+    "    print \"--- initial C calculation\"\n",
+    "    print param_grid\n",
+    "    k_fold = KFold(len(Y_par), n_folds=5, shuffle=True, random_state=555)\n",
+    "    clf = LogisticRegression(penalty='l2', random_state=555, n_jobs=-1)\n",
+    "    gs_cv = GridSearchCV(clf, param_grid, scoring='roc_auc', cv=k_fold, n_jobs=-1)\n",
+    "    gs_cv.fit(X_par, Y_par)\n",
+    "    print \"best param = \", gs_cv.best_params_, \"best score = \", gs_cv.best_score_\n",
+    "    for score in gs_cv.grid_scores_:\n",
+    "        print score\n",
+    "    # fine tuning for \n",
+    "    fine_grid = {'C': np.add(gs_cv.best_params_.get('C'), np.multiply(np.arange(-5, 6), gs_cv.best_params_.get('C')/10))}\n",
+    "    print \"--- fine C tuning\"\n",
+    "    print fine_grid\n",
+    "    gs_cv = GridSearchCV(clf, fine_grid, scoring='roc_auc', cv=k_fold)\n",
+    "    gs_cv.fit(X_par, Y_par)\n",
+    "    print \"best param = \", gs_cv.best_params_, \"best score = \", gs_cv.best_score_\n",
+    "    for score in gs_cv.grid_scores_:\n",
+    "        print score\n",
+    "    print 'Average time for single regression fit:', (datetime.datetime.now() - start_time)/(len(param_grid.get('C')) +len(fine_grid.get('C')))\n",
+    "    return gs_cv.best_params_\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "# GradientBoostingClassifier\n",
+    "from sklearn.ensemble import GradientBoostingClassifier\n",
+    "from sklearn.cross_validation import cross_val_score\n",
+    "from sklearn.cross_validation import KFold\n",
+    "import datetime\n",
+    "\n",
+    "# cross validation of GradientBoostingClassifier \n",
+    "def calculate_scores_for_estimators(n_estimators, X, y, max_depth=3):\n",
+    "    start_time = datetime.datetime.now()\n",
+    "    clf = GradientBoostingClassifier(n_estimators=n_estimators,\n",
+    "        random_state=555, max_depth=max_depth\n",
+    "    )\n",
+    "    k_fold = KFold(len(y), n_folds=5, random_state=555, shuffle=True)\n",
+    "    local_scores = cross_val_score(clf, X, y, cv=k_fold, scoring='roc_auc', n_jobs=-1)\n",
+    "    print 'score_mean=',local_scores.mean(), 'scores_std=',local_scores.std(), \\\n",
+    "        'n_estimators =', n_estimators, 'max_depth=', max_depth, 'Time:', datetime.datetime.now() - start_time\n",
+    "    return local_scores.mean(), local_scores.std(), n_estimators, max_depth\n",
+    "\n",
+    "def crossvalidate_estimators(arr_n_estimators, X, y, max_depth=3):\n",
+    "    rez_scores_local = list()\n",
+    "    for n_estimators in arr_n_estimators:    \n",
+    "        rez_scores_local.append(calculate_scores_for_estimators(n_estimators, x_bust , y_bust, max_depth=max_depth))    \n",
+    "    return rez_scores_local\n",
+    "\n",
+    "def get_best_GradientBoostingClassifier(rez_scores_local):\n",
+    "    # get best classifier\n",
+    "    import sys\n",
+    "    print type(rez_scores_local)\n",
+    "    type(rez_scores_local[0])\n",
+    "    max_score=-sys.maxint - 1\n",
+    "    max_index=\"a\"\n",
+    "    for index in range(len(rez_scores_local)):\n",
+    "        if (rez_scores_local[index][0]>max_score):\n",
+    "            max_index=index\n",
+    "            max_score=rez_scores_local[index][0]\n",
+    "            \n",
+    "        print rez_scores_local[index][0]\n",
+    "    best_n_estimators=rez_scores_local[max_index][2]\n",
+    "    best_max_depth=rez_scores_local[max_index][3]\n",
+    "    \n",
+    "    print 'max_score =', max_score, 'max_index=', max_index, \\\n",
+    "        'best_n_estimators=', best_n_estimators, 'best_max_depth=', best_max_depth\n",
+    "    \n",
+    "    clf = GradientBoostingClassifier(n_estimators=best_n_estimators,\n",
+    "        random_state=555, max_depth=best_max_depth\n",
+    "    )\n",
+    "    return clf\n",
+    "\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# calculate predicted probabilities and store to file\n",
+    "#fileName = '/Volumes/fast64/My/MachineLearning/week07/Dota2_01/dota2-kaggle-01.csv'\n",
+    "def store_predicted_probability(clf, parX, parX_match_id, fileName):\n",
+    "    rez=clf.predict_proba(parX)[:, 1]\n",
+    "    print \"Минимум предсказанных вероятностей =\",min(rez)\n",
+    "    print \"Максимум предсказанных вероятностей =\", max(rez)\n",
+    "    check = {\n",
+    "        'match_id': parX_match_id.index, \n",
+    "        'radiant_win': rez\n",
+    "    }\n",
+    "\n",
+    "    check_dframe = pandas.DataFrame.from_dict(check)\n",
+    "    check_dframe.set_index('match_id')\n",
+    "\n",
+    "    check_dframe.to_csv(fileName, index=False, columns=['match_id', 'radiant_win'])\n",
+    "    return check_dframe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# prepare data for logistic regression\n",
+    "import pandas\n",
+    "def prepare_for_log_regr(fileName, isTest):\n",
+    "    # Считайте таблицу с признаками из файла features.csv с помощью кода, приведенного выше. \n",
+    "\n",
+    "    features = pandas.read_csv(fileName, index_col='match_id')\n",
+    "    # print features.head()\n",
+    "    print features.info()\n",
+    "    \n",
+    "    if (isTest):        \n",
+    "        local_match_info = features\n",
+    "    else:    \n",
+    "        local_match_info, local_y = remove_result_columns(features)\n",
+    "        \n",
+    "    X_removed_heroes_rooms = remove_initial_heroes_and_lobbies(local_match_info)\n",
+    "    X = replace_skpped_values_with_0(X_removed_heroes_rooms)\n",
+    "\n",
+    "    xxx_heroes= words_bag_of_heroes(local_match_info)\n",
+    "    print type(xxx_heroes)\n",
+    "    print xxx_heroes.shape\n",
+    "\n",
+    "    xxx_rooms= words_bag_of_rooms(local_match_info)\n",
+    "    print type(xxx_rooms)\n",
+    "    print xxx_rooms.shape\n",
+    "\n",
+    "    xxx_rooms_and_heroes=join_bags_rooms_and_heroes(xxx_heroes , xxx_rooms)\n",
+    "\n",
+    "    X_bagged = add_word_bag(X,xxx_rooms_and_heroes)\n",
+    "    if (isTest):        \n",
+    "        return X_bagged, local_match_info\n",
+    "    else:    \n",
+    "        return X_bagged, local_y, local_match_info\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Some draft code"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# prepare data for gradient boosting    ?????????????????????\n",
+    "import pandas\n",
+    "def prepare_for_boosting(fileName, isTest):\n",
+    "    # Считайте таблицу с признаками из файла features.csv с помощью кода, приведенного выше. \n",
+    "\n",
+    "    features = pandas.read_csv(fileName, index_col='match_id')\n",
+    "    print features.head()\n",
+    "    print features.info()\n",
+    "    \n",
+    "    if (isTest):        \n",
+    "        match_info = features\n",
+    "    else:    \n",
+    "        match_info, y = remove_result_columns(features)\n",
+    "        \n",
+    "    X_removed_heroes_rooms = remove_initial_heroes_and_lobbies(match_info)\n",
+    "    X = replace_skpped_values_with_0(X_removed_heroes_rooms)\n",
+    "\n",
+    "    xxx_heroes= words_bag_of_heroes(match_info)\n",
+    "    print type(xxx_heroes)\n",
+    "    print xxx_heroes.shape\n",
+    "\n",
+    "    xxx_rooms= words_bag_of_rooms(match_info)\n",
+    "    print type(xxx_rooms)\n",
+    "    print xxx_rooms.shape\n",
+    "\n",
+    "    xxx_rooms_and_heroes=join_bags_rooms_and_heroes(xxx_heroes , xxx_rooms)\n",
+    "\n",
+    "    X_bagged = add_word_bag(X,xxx_rooms_and_heroes)\n",
+    "    if (isTest):        \n",
+    "        return X_bagged, X\n",
+    "    else:    \n",
+    "        return X_bagged, y\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "score_mean= 0.561887115856 scores_std= 0.0027478066173 n_estimators = 1 max_depth= 1 Time: 0:00:14.305596\n",
+      "score_mean= 0.561887115856 scores_std= 0.0027478066173 n_estimators = 2 max_depth= 1 Time: 0:00:16.225341\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[(1, (0.56188711585556317, 0.0027478066173049396, 1, 1)),\n",
+       " (2, (0.56188711585556317, 0.0027478066173049396, 2, 1))]"
+      ]
+     },
+     "execution_count": 114,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Skip it ++++++++++++++++++++++\n",
+    "# Считаем для 30 - max_depth=6\n",
+    "rez_scores_local = list()\n",
+    "for n_estimators in [1,2]:    \n",
+    "    rez_scores_local.append((n_estimators, calculate_scores_for_estimators(n_estimators, x_bust , y_bust, max_depth=1)))    \n",
+    "rez_scores_local"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<type 'list'>\n",
+      "0.561887115856\n",
+      "0.561887115856\n",
+      "0.561887115856\n",
+      "-9223372036854775808 2\n"
+     ]
+    }
+   ],
+   "source": [
+    "# check if max score is good\n",
+    "import sys\n",
+    "print type(rez_scores_local)\n",
+    "type(rez_scores_local[0])\n",
+    "max_score=-sys.maxint - 1\n",
+    "max_index=\"a\"\n",
+    "for index in range(len(rez_scores_local)):\n",
+    "    if (rez_scores_local[index][1][0]>max_score):\n",
+    "        max_index=index\n",
+    "    print rez_scores_local[index][1][0]\n",
+    "print max_score, max_index\n",
+    "\n",
+    "#   print 'Current fruit :', fruits[index]\n",
+    "# rez_scores_local[:]\n",
+    "#[1][0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# LogisticRegression - train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 97230 entries, 0 to 114406\n",
+      "Columns: 108 entries, start_time to barracks_status_dire\n",
+      "dtypes: float64(12), int64(96)\n",
+      "memory usage: 80.9 MB\n",
+      "None\n",
+      "(97230, 102) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 90) <class 'pandas.core.frame.DataFrame'>\n",
+      "Before\n",
+      "NaNs = 193087\n",
+      "not NaNs = 8557613\n",
+      "after\n",
+      "NaNs = 0\n",
+      "not NaNs = 8750700\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 113)\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 10)\n",
+      "(97230, 113) (97230, 10)\n",
+      "(97230, 123)\n",
+      "(97230, 90) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 123) <type 'numpy.ndarray'>\n",
+      "(97230, 213) <type 'numpy.ndarray'>\n",
+      "Done1\n",
+      "Done2\n",
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.751873476501\n",
+      "mean: 0.50711, std: 0.00085, params: {'C': 1e-11}\n",
+      "mean: 0.74280, std: 0.00339, params: {'C': 0.0001}\n",
+      "mean: 0.75157, std: 0.00349, params: {'C': 0.001}\n",
+      "mean: 0.75187, std: 0.00349, params: {'C': 0.01}\n",
+      "mean: 0.75183, std: 0.00350, params: {'C': 0.1}\n",
+      "mean: 0.75182, std: 0.00350, params: {'C': 1}\n",
+      "mean: 0.75182, std: 0.00350, params: {'C': 10}\n",
+      "mean: 0.75182, std: 0.00350, params: {'C': 100}\n",
+      "mean: 0.75182, std: 0.00350, params: {'C': 1000}\n",
+      "mean: 0.75182, std: 0.00350, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.751887870551\n",
+      "mean: 0.75189, std: 0.00349, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.75188, std: 0.00349, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.75188, std: 0.00349, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.75188, std: 0.00349, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.75188, std: 0.00349, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.75187, std: 0.00349, params: {'C': 0.01}\n",
+      "mean: 0.75187, std: 0.00350, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.75187, std: 0.00350, params: {'C': 0.012}\n",
+      "mean: 0.75186, std: 0.00350, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.75186, std: 0.00350, params: {'C': 0.014}\n",
+      "mean: 0.75186, std: 0.00350, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:20.786627\n",
+      "Done3\n",
+      "Done4\n",
+      "Done5\n",
+      "Минимум предсказанных вероятностей = 0.00125251781433\n",
+      "Максимум предсказанных вероятностей = 0.998498987628\n",
+      "Done6\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "x_train, y_train, x_train_data_frame,  = prepare_for_log_regr('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features.csv', False)\n",
+    "ss = stdScaling_fit(x_train)\n",
+    "print 'Done1'\n",
+    "X_train_std_scal = stdScaling_transform( x_train ,ss)\n",
+    "print 'Done2'\n",
+    "\n",
+    "log_reg_best_param = calculate_logreg_best_param(X_train_std_scal, y_train)\n",
+    "print 'Done3'\n",
+    "\n",
+    "clf = LogisticRegression(penalty='l2', random_state=555, C=log_reg_best_param['C']) # !! replace with log_reg_best_param\n",
+    "print 'Done4'\n",
+    "\n",
+    "clf.fit(X_train_std_scal, y_train)\n",
+    "\n",
+    "print 'Done5'\n",
+    "rez_dataframe = store_predicted_probability(clf, X_train_std_scal, x_train_data_frame, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/logreg_train.csv')\n",
+    "print 'Done6'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 97230 entries, 0 to 114406\n",
+      "Columns: 108 entries, start_time to barracks_status_dire\n",
+      "dtypes: float64(12), int64(96)\n",
+      "memory usage: 80.9 MB\n",
+      "None\n",
+      "(97230, 102) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "Before\n",
+      "NaNs = 193087\n",
+      "not NaNs = 8654843\n",
+      "after\n",
+      "NaNs = 0\n",
+      "not NaNs = 8847930\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 113)\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 10)\n",
+      "(97230, 113) (97230, 10)\n",
+      "(97230, 123)\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 123) <type 'numpy.ndarray'>\n",
+      "(97230, 214) <type 'numpy.ndarray'>\n",
+      "Done1\n",
+      "Done2\n",
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.752012765217\n",
+      "mean: 0.50815, std: 0.00173, params: {'C': 1e-11}\n",
+      "mean: 0.74291, std: 0.00337, params: {'C': 0.0001}\n",
+      "mean: 0.75172, std: 0.00349, params: {'C': 0.001}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75197, std: 0.00351, params: {'C': 0.1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 10}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1000}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.752028818385\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.012}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:18.811567\n",
+      "Done3\n",
+      "Done4\n",
+      "Done5\n",
+      "Минимум предсказанных вероятностей = 0.00115585751738\n",
+      "Максимум предсказанных вероятностей = 0.998548195379\n",
+      "Done6\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "x_train, y_train, x_train_data_frame,  = prepare_for_log_regr('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features.csv', False)\n",
+    "ss = stdScaling_fit(x_train)\n",
+    "print 'Done1'\n",
+    "X_train_std_scal = stdScaling_transform( x_train ,ss)\n",
+    "print 'Done2'\n",
+    "\n",
+    "log_reg_best_param = calculate_logreg_best_param(X_train_std_scal, y_train)\n",
+    "print 'Done3'\n",
+    "\n",
+    "clf = LogisticRegression(penalty='l2', random_state=555, C=log_reg_best_param['C']) # !! replace with log_reg_best_param\n",
+    "print 'Done4'\n",
+    "\n",
+    "clf.fit(X_train_std_scal, y_train)\n",
+    "\n",
+    "print 'Done5'\n",
+    "rez_dataframe = store_predicted_probability(clf, X_train_std_scal, x_train_data_frame, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/logreg_train.csv')\n",
+    "print 'Done6'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.752012765217\n",
+      "mean: 0.50815, std: 0.00173, params: {'C': 1e-11}\n",
+      "mean: 0.74291, std: 0.00337, params: {'C': 0.0001}\n",
+      "mean: 0.75172, std: 0.00349, params: {'C': 0.001}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75197, std: 0.00351, params: {'C': 0.1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 10}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1000}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.752028818385\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.012}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:20.651248\n"
+     ]
+    }
+   ],
+   "source": [
+    "log_reg_best_param = calculate_logreg_best_param(X_std_scal)\n",
+    "log_reg_best_param"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# LogisticRegression - test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 17177 entries, 6 to 114398\n",
+      "Columns: 102 entries, start_time to dire_first_ward_time\n",
+      "dtypes: float64(12), int64(90)\n",
+      "memory usage: 13.5 MB\n",
+      "None\n",
+      "(17177, 102) <class 'pandas.core.frame.DataFrame'>\n",
+      "(17177, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "Before\n",
+      "NaNs = 34418\n",
+      "not NaNs = 1528689\n",
+      "after\n",
+      "NaNs = 0\n",
+      "not NaNs = 1563107\n",
+      "<type 'numpy.ndarray'>\n",
+      "(17177, 113)\n",
+      "<type 'numpy.ndarray'>\n",
+      "(17177, 10)\n",
+      "(17177, 113) (17177, 10)\n",
+      "(17177, 123)\n",
+      "(17177, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(17177, 123) <type 'numpy.ndarray'>\n",
+      "(17177, 214) <type 'numpy.ndarray'>\n",
+      "Done\n"
+     ]
+    }
+   ],
+   "source": [
+    "X_test, X_test_data_frame = prepare_for_log_regr('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features_test.csv', True)\n",
+    "X_test_std_scal = stdScaling_transform( X_test ,ss)\n",
+    "print 'Done'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Минимум предсказанных вероятностей = 0.00885013986788\n",
+      "Максимум предсказанных вероятностей = 0.996288227305\n",
+      "Done\n"
+     ]
+    }
+   ],
+   "source": [
+    "rez_dataframe = store_predicted_probability(clf, X_test_std_scal, X_test_data_frame, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/logreg_test_2.csv')\n",
+    "print 'Done'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Градиентный бустинг - train\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Градиентный бустинг - train\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 97230 entries, 0 to 114406\n",
+      "Columns: 108 entries, start_time to barracks_status_dire\n",
+      "dtypes: float64(12), int64(96)\n",
+      "memory usage: 80.9 MB\n",
+      "None\n",
+      "(97230, 102) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "Before\n",
+      "NaNs = 193087\n",
+      "not NaNs = 8654843\n",
+      "after\n",
+      "NaNs = 0\n",
+      "not NaNs = 8847930\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 113)\n",
+      "<type 'numpy.ndarray'>\n",
+      "(97230, 10)\n",
+      "(97230, 113) (97230, 10)\n",
+      "(97230, 123)\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 123) <type 'numpy.ndarray'>\n",
+      "(97230, 214) <type 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_bust , y_bust, x_bust_dataframe = prepare_for_log_regr('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features.csv', False)\n",
+    "print 'Done'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n_estimators = 200 max_depth= 6 Time elapsed: 0:50:03.578764\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[(200, (0.73496934060687025, 0.0034719373478807334))]"
+      ]
+     },
+     "execution_count": 86,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\n",
+    "# Считаем для 200 - max_depth=6\n",
+    "rez_scores_6 = list()\n",
+    "for n_estimators in [200]:    \n",
+    "    rez_scores_6.append((n_estimators, calculate_scores_for_estimators(n_estimators, x_bust , y_bust, max_depth=6)))    \n",
+    "rez_scores_6"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 144,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "score_mean= 0.730912764209 scores_std= 0.00295226870677 n_estimators = 300 max_depth= 8 Time: 2:22:47.397056\n",
+      "<type 'list'>\n",
+      "0.730912764209\n",
+      "max_score = 0.730912764209 max_index= 0 best_n_estimators= 300 best_max_depth= 8\n",
+      "Минимум предсказанных вероятностей = 0.00311487817964\n",
+      "Максимум предсказанных вероятностей = 0.996693682736\n",
+      "Done\n"
+     ]
+    }
+   ],
+   "source": [
+    "rez_scores = crossvalidate_estimators([300], x_bust, y_bust, max_depth=8)\n",
+    "clf= get_best_GradientBoostingClassifier(rez_scores)\n",
+    "clf.fit(x_bust, y_bust)\n",
+    "rez_dataframe = store_predicted_probability(clf, x_bust, match_info, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_train_300_8.csv')\n",
+    "print 'Done'\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "score_mean= 0.734969340607 scores_std= 0.00347193734788 n_estimators = 200 max_depth= 6 Time: 0:47:36.605263\n",
+      "<type 'list'>\n",
+      "0.734969340607\n",
+      "max_score = 0.734969340607 max_index= 0 best_n_estimators= 200 best_max_depth= 6\n"
+     ]
+    },
+    {
+     "ename": "NameError",
+     "evalue": "name 'match_info' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-16-ad1750883046>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0mclf\u001b[0m\u001b[0;34m=\u001b[0m \u001b[0mget_best_GradientBoostingClassifier\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mrez_scores\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0mclf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx_bust\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my_bust\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 4\u001b[0;31m \u001b[0mrez_dataframe\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstore_predicted_probability\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mclf\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mx_bust\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmatch_info\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_train_200_6.csv'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      5\u001b[0m \u001b[0;32mprint\u001b[0m \u001b[0;34m'Done'\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'match_info' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "rez_scores = crossvalidate_estimators([200], x_bust, y_bust, max_depth=6)\n",
+    "clf= get_best_GradientBoostingClassifier(rez_scores)\n",
+    "clf.fit(x_bust, y_bust)\n",
+    "rez_dataframe = store_predicted_probability(clf, x_bust, x_bust_dataframe, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_train_200_6.csv')\n",
+    "print 'Done'\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 150,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Минимум предсказанных вероятностей = 0.00311487817964\n",
+      "Максимум предсказанных вероятностей = 0.996693682736\n",
+      "Done\n"
+     ]
+    }
+   ],
+   "source": [
+    "rez_dataframe = store_predicted_probability(clf, x_bust, match_info, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_train_200_6.csv')\n",
+    "print 'Done'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Градиентный бустинг - test\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 151,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 17177 entries, 6 to 114398\n",
+      "Columns: 102 entries, start_time to dire_first_ward_time\n",
+      "dtypes: float64(12), int64(90)\n",
+      "memory usage: 13.5 MB\n",
+      "None\n",
+      "(17177, 102) <class 'pandas.core.frame.DataFrame'>\n",
+      "(17177, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "Before\n",
+      "NaNs = 34418\n",
+      "not NaNs = 1528689\n",
+      "after\n",
+      "NaNs = 0\n",
+      "not NaNs = 1563107\n",
+      "<type 'numpy.ndarray'>\n",
+      "(17177, 113)\n",
+      "<type 'numpy.ndarray'>\n",
+      "(17177, 10)\n",
+      "(17177, 113) (17177, 10)\n",
+      "(17177, 123)\n",
+      "(17177, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(17177, 123) <type 'numpy.ndarray'>\n",
+      "(17177, 214) <type 'numpy.ndarray'>\n",
+      "Минимум предсказанных вероятностей = 0.0120025187387\n",
+      "Максимум предсказанных вероятностей = 0.998908500027\n",
+      "Done\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_test, X_test_data_frame = prepare_for_log_regr('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features_test.csv', True)\n",
+    "\n",
+    "rez_dataframe = store_predicted_probability(clf, x_test, X_test_data_frame, '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_test_200_6.csv')\n",
+    "print 'Done'\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Сливаем результаты в один"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 193,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "# сливаем массив результирующих csv в один\n",
+    "\n",
+    "def join_all_results(files, rez_file_name):\n",
+    "    src_list= list()\n",
+    "    for fl in files:    \n",
+    "        fl_content = pandas.read_csv(fl, index_col='match_id')\n",
+    "        print fl_content.shape\n",
+    "        src_list.append(fl_content)\n",
+    "\n",
+    "    lngth = len(src_list[0].index)\n",
+    "    rez = [0] * lngth\n",
+    "\n",
+    "    src_num = len(src_list)\n",
+    "\n",
+    "    for sss in src_list:\n",
+    "        rez = rez + sss['radiant_win']\n",
+    "\n",
+    "    rez =rez/src_num\n",
+    "\n",
+    "    test_check = {\n",
+    "        'match_id': src_list[0].index, \n",
+    "        'radiant_win': rez\n",
+    "    }\n",
+    "\n",
+    "    test_check_dframe = pandas.DataFrame.from_dict(test_check)\n",
+    "    test_check_dframe.set_index('match_id')\n",
+    "\n",
+    "    test_check_dframe.to_csv(rez_file_name, index=False, columns=['match_id', 'radiant_win'])\n",
+    "    print 'done join_all_results'\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 194,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(17177, 1)\n",
+      "(17177, 1)\n",
+      "done join_all_results\n"
+     ]
+    }
+   ],
+   "source": [
+    "files = ['/Volumes/fast64/My/MachineLearning/week07/Dota2_02/grad_bust_test_300_8.csv', \n",
+    "        '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/logreg_test.csv']\n",
+    "rez_file_name = '/Volumes/fast64/My/MachineLearning/week07/Dota2_02/summary_test1.csv'\n",
+    "join_all_results(files, rez_file_name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Старое  --------\n",
+    "# Старое  -------- \n",
+    "# Старое  -------- \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Подход 1: градиентный бустинг \"в лоб\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Data preparation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "Проверьте выборку на наличие пропусков с помощью функции count(), которая для каждого столбца показывает число заполненных значений. Много ли пропусков в данных? Запишите названия признаков, имеющих пропуски, и попробуйте для любых двух из них дать обоснование, почему их значения могут быть пропущены.\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Q: Много ли пропусков в данных?\n",
+      "A:  12 признаков имеют пропуски в данных? \n",
+      "\n",
+      "названия признаков, имеющих пропуски\n",
+      "first_blood_time               77677\n",
+      "first_blood_team               77677\n",
+      "first_blood_player1            77677\n",
+      "first_blood_player2            53243\n",
+      "radiant_bottle_time            81539\n",
+      "radiant_courier_time           96538\n",
+      "radiant_flying_courier_time    69751\n",
+      "radiant_first_ward_time        95394\n",
+      "dire_bottle_time               81087\n",
+      "dire_courier_time              96554\n",
+      "dire_flying_courier_time       71132\n",
+      "dire_first_ward_time           95404\n",
+      "dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "match_info_count = match_info.count()\n",
+    "missing_data_columns_info = match_info_count[match_info_count != match_info_count.max()]\n",
+    "\n",
+    "print \"Q: Много ли пропусков в данных?\"\n",
+    "print \"A: \",len(missing_data_columns_info),\"признаков имеют пропуски в данных?\",\"\\n\"\n",
+    "\n",
+    "print  \"названия признаков, имеющих пропуски\"\n",
+    "\n",
+    "\n",
+    "print missing_data_columns_info\n",
+    "# !!!!!!!!!!! посчитать % пропуска"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='green'>\n",
+    "Q: попробуйте для любых двух из них дать обоснование, почему их значения могут быть пропущены <br/>\n",
+    "A:  <br/>\n",
+    "поля <b>first_blood_time, first_blood_team, first_blood_player1</b><br/>\n",
+    "не было первой крови в первые 5 минут\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Количество признаков с пропусками после заполнения = 0\n"
+     ]
+    }
+   ],
+   "source": [
+    "# проверим, что нет признаков с пропусками\n",
+    "X_count=X.count()\n",
+    "ZZZ = X_count[X_count != X_count.max()]\n",
+    "print \"Количество признаков с пропусками после заполнения =\", ZZZ.size"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "Какой столбец содержит целевую переменную? Запишите его название.\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='green'>\n",
+    "Q: Какой столбец содержит целевую переменную? Запишите его название. <br/>\n",
+    "A:  <br/>\n",
+    "столбец <b>radiant_win</b><br/>\n",
+    "1, если победила команда Radiant, 0 — иначе\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "Забудем, что в выборке есть категориальные признаки, и попробуем обучить градиентный бустинг над деревьями на имеющейся матрице \"объекты-признаки\". Зафиксируйте генератор разбиений для кросс-валидации по 5 блокам (KFold), не забудьте перемешать при этом выборку (shuffle=True), поскольку данные в таблице отсортированы по времени, и без перемешивания можно столкнуться с нежелательными эффектами при оценивании качества. Оцените качество градиентного бустинга (GradientBoostingClassifier) с помощью данной кросс-валидации, попробуйте при этом разное количество деревьев (как минимум протестируйте следующие значения для количества деревьев: 10, 20, 30). Долго ли настраивались классификаторы? Достигнут ли оптимум на испытанных значениях параметра n_estimators, или же качество, скорее всего, продолжит расти при дальнейшем его увеличении?\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import GradientBoostingClassifier\n",
+    "from sklearn.cross_validation import cross_val_score\n",
+    "from sklearn.cross_validation import KFold\n",
+    "import datetime\n",
+    "\n",
+    "def calculate_scores_for_estimators(n_estimators, max_depth=3):\n",
+    "    start_time = datetime.datetime.now()\n",
+    "    clf = GradientBoostingClassifier(n_estimators=n_estimators,\n",
+    "        random_state=555, max_depth=max_depth,\n",
+    "    )\n",
+    "    k_fold = KFold(len(y), n_folds=5, random_state=555, shuffle=True)\n",
+    "    local_scores = cross_val_score(clf, X, y, cv=k_fold, scoring='roc_auc')\n",
+    "    print 'n_estimators =', n_estimators, 'max_depth=', max_depth, 'Time elapsed:', datetime.datetime.now() - start_time\n",
+    "    return local_scores.mean(), local_scores.std()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n_estimators = 10 max_depth= 3 Time elapsed: 0:00:33.491465\n",
+      "n_estimators = 20 max_depth= 3 Time elapsed: 0:00:59.361122\n",
+      "n_estimators = 30 max_depth= 3 Time elapsed: 0:01:21.811880\n",
+      "n_estimators = 100 max_depth= 3 Time elapsed: 0:04:32.975440\n",
+      "n_estimators = 200 max_depth= 3 Time elapsed: 0:09:17.470214\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[(10, (0.66468727552414852, 0.0038817045833836159)),\n",
+       " (20, (0.6828011517711976, 0.0024973305989101943)),\n",
+       " (30, (0.6899013263995214, 0.0025253491889204232)),\n",
+       " (100, (0.70652239217616875, 0.0030394770165450588)),\n",
+       " (200, (0.71358162542367565, 0.0036940112134090986))]"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Считаем для 10,20,30, 100, 200 - max_depth=3\n",
+    "rez_scores_3 = list()\n",
+    "for n_estimators in [10,20,30,100, 200]:    \n",
+    "    rez_scores_3.append((n_estimators, calculate_scores_for_estimators(n_estimators=n_estimators)))    \n",
+    "rez_scores_3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n_estimators = 10 max_depth= 2 Time elapsed: 0:00:20.809590\n",
+      "n_estimators = 20 max_depth= 2 Time elapsed: 0:00:35.305883\n",
+      "n_estimators = 30 max_depth= 2 Time elapsed: 0:00:47.677842\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[(10, (0.6519421989913512, 0.007130222524202247)),\n",
+       " (20, (0.6740433400311856, 0.0040364255259091614)),\n",
+       " (30, (0.68312542263704135, 0.0036815837502438067))]"
+      ]
+     },
+     "execution_count": 46,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Считаем для 10,20,30 - max_depth=2\n",
+    "rez_scores_2 = list()\n",
+    "for n_estimators in [10,20,30]:    \n",
+    "    rez_scores_2.append((n_estimators, calculate_scores_for_estimators(n_estimators=n_estimators, max_depth=2)))    \n",
+    "rez_scores_2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n_estimators = 10 max_depth= 6 Time elapsed: 0:01:54.204002\n",
+      "n_estimators = 20 max_depth= 6 Time elapsed: 0:03:45.261608\n",
+      "n_estimators = 30 max_depth= 6 Time elapsed: 0:05:31.770090\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[(10, (0.68222882417589958, 0.0042260561867111949)),\n",
+       " (20, (0.69494998648901041, 0.0031337980686849207)),\n",
+       " (30, (0.70085551658120337, 0.0028377581510158401))]"
+      ]
+     },
+     "execution_count": 47,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Считаем для 10,20,30 - max_depth=6\n",
+    "rez_scores_6 = list()\n",
+    "for n_estimators in [10,20,30]:    \n",
+    "    rez_scores_6.append((n_estimators, calculate_scores_for_estimators(n_estimators=n_estimators, max_depth=6)))    \n",
+    "rez_scores_6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Подход 2: логистическая регрессия"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "1. Оцените качество логистической регрессии (sklearn.linear_model.LogisticRegression с L2-регуляризацией) с помощью кросс-валидации по той же схеме, которая использовалась для градиентного бустинга. Подберите при этом лучший параметр регуляризации (C). Какое наилучшее качество у вас получилось? Как оно соотносится с качеством градиентного бустинга? Чем вы можете объяснить эту разницу? Быстрее ли работает логистическая регрессия по сравнению с градиентным бустингом?</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.716379353998\n",
+      "mean: 0.50643, std: 0.00166, params: {'C': 1e-11}\n",
+      "mean: 0.71128, std: 0.00346, params: {'C': 0.0001}\n",
+      "mean: 0.71622, std: 0.00368, params: {'C': 0.001}\n",
+      "mean: 0.71638, std: 0.00375, params: {'C': 0.01}\n",
+      "mean: 0.71635, std: 0.00377, params: {'C': 0.1}\n",
+      "mean: 0.71634, std: 0.00377, params: {'C': 1}\n",
+      "mean: 0.71634, std: 0.00377, params: {'C': 10}\n",
+      "mean: 0.71634, std: 0.00377, params: {'C': 100}\n",
+      "mean: 0.71634, std: 0.00377, params: {'C': 1000}\n",
+      "mean: 0.71634, std: 0.00377, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.716391892879\n",
+      "mean: 0.71639, std: 0.00373, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.71639, std: 0.00374, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.71638, std: 0.00374, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.71638, std: 0.00375, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.71638, std: 0.00375, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.71638, std: 0.00375, params: {'C': 0.01}\n",
+      "mean: 0.71638, std: 0.00375, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.71637, std: 0.00375, params: {'C': 0.012}\n",
+      "mean: 0.71637, std: 0.00375, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.71637, std: 0.00375, params: {'C': 0.014}\n",
+      "mean: 0.71637, std: 0.00375, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:19.743829\n"
+     ]
+    }
+   ],
+   "source": [
+    "calculate_logreg(X_std_scal)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "4. Воспользуемся подходом \"мешок слов\" для кодирования информации о героях. Пусть всего в игре имеет N различных героев. Сформируем N признаков, при этом i-й будет равен нулю, если i-й герой не участвовал в матче; единице, если i-й герой играл за команду Radiant; минус единице, если i-й герой играл за команду Dire. Ниже вы можете найти код, который выполняет данной преобразование. Добавьте полученные признаки к числовым, которые вы использовали во втором пункте данного этапа.\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "X_pick = np.zeros((X.shape[0], max(unique_heroes)))\n",
+    "\n",
+    "for i, match_id in enumerate(X.index):\n",
+    "    for p in xrange(5):\n",
+    "        X_pick[i, X.ix[match_id, 'r%d_hero' % (p+1)]-1] = 1\n",
+    "        X_pick[i, X.ix[match_id, 'd%d_hero' % (p+1)]-1] = -1\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(97230, 112) <type 'tuple'>\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 203) <type 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print X_pick.shape, type(X_pick.shape)\n",
+    "print X_categor_removed.shape, type(X_categor_removed)\n",
+    "\n",
+    "from scipy.sparse import hstack\n",
+    "X_categor_removed_bag_words = hstack([X_categor_removed, X_pick]).toarray()\n",
+    "print X_categor_removed_bag_words.shape, type(X_categor_removed_bag_words)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "5. Проведите кросс-валидацию для логистической регрессии на новой выборке с подбором лучшего параметра регуляризации. Какое получилось качество? Улучшилось ли оно? Чем вы можете это объяснить?\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.751841237651\n",
+      "mean: 0.50703, std: 0.00039, params: {'C': 1e-11}\n",
+      "mean: 0.74273, std: 0.00335, params: {'C': 0.0001}\n",
+      "mean: 0.75154, std: 0.00347, params: {'C': 0.001}\n",
+      "mean: 0.75184, std: 0.00347, params: {'C': 0.01}\n",
+      "mean: 0.75179, std: 0.00348, params: {'C': 0.1}\n",
+      "mean: 0.75179, std: 0.00348, params: {'C': 1}\n",
+      "mean: 0.75178, std: 0.00348, params: {'C': 10}\n",
+      "mean: 0.75178, std: 0.00348, params: {'C': 100}\n",
+      "mean: 0.75178, std: 0.00348, params: {'C': 1000}\n",
+      "mean: 0.75178, std: 0.00348, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.751859092208\n",
+      "mean: 0.75186, std: 0.00347, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.75186, std: 0.00347, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.75185, std: 0.00347, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.75185, std: 0.00347, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.75184, std: 0.00347, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.75184, std: 0.00347, params: {'C': 0.01}\n",
+      "mean: 0.75184, std: 0.00347, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.75183, std: 0.00347, params: {'C': 0.012}\n",
+      "mean: 0.75183, std: 0.00347, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.75183, std: 0.00347, params: {'C': 0.014}\n",
+      "mean: 0.75183, std: 0.00347, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:20.538515\n"
+     ]
+    }
+   ],
+   "source": [
+    "X_categor_removed_bag_words_std_scal = StandardScaler().fit_transform(X_categor_removed_bag_words)\n",
+    "calculate_logreg(X_categor_removed_bag_words_std_scal)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "# добавим мешок слов по комнате"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 7]\n",
+      "unique_lobbyes.size= 3\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "unique_lobbyes = np.unique(X['lobby_type'])\n",
+    "print unique_lobbyes\n",
+    "print 'unique_lobbyes.size=', unique_lobbyes.size"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "'''id,name\n",
+    "-1,Invalid\n",
+    "0,Public matchmaking\n",
+    "1,Practice\n",
+    "2,Tournament\n",
+    "3,Tutorial\n",
+    "4,Co-op with bots\n",
+    "5,Team match\n",
+    "6,Solo Queue\n",
+    "7,Ranked\n",
+    "8,Solo Mid 1vs1\n",
+    "'''"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "num_rooms = 10\n",
+    "X_pick_room = np.zeros([X.shape[0], num_rooms])   # !!! two (())\n",
+    "\n",
+    "for i, match_id in enumerate(X.index):\n",
+    "    for p in xrange(10):\n",
+    "        X_pick_room[i, X.ix[match_id, 'lobby_type']+1] = 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(97230, 112)\n",
+      "(97230, 10)\n",
+      "(97230, 122)\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "print X_pick.shape\n",
+    "print X_pick_room.shape\n",
+    "X_pick_heroes_room = np.concatenate((X_pick , X_pick_room),  axis=1)\n",
+    "print X_pick_heroes_room.shape\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(97230, 122) <type 'tuple'>\n",
+      "(97230, 91) <class 'pandas.core.frame.DataFrame'>\n",
+      "(97230, 213) <type 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print X_pick_heroes_room.shape, type(X_pick_heroes_room.shape)\n",
+    "print X_categor_removed.shape, type(X_categor_removed)\n",
+    "\n",
+    "from scipy.sparse import hstack\n",
+    "X_categor_removed_bag_words_hero_room = hstack([X_categor_removed, X_pick_heroes_room]).toarray()\n",
+    "print X_categor_removed_bag_words_hero_room.shape, type(X_categor_removed_bag_words_hero_room)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "-6.34992553174e-17 -23.7077646507 40.3487950291\n",
+      "-6.34992553174e-17 -23.7077646507 40.3487950291\n"
+     ]
+    }
+   ],
+   "source": [
+    "ss = StandardScaler().fit(X_categor_removed_bag_words_hero_room)\n",
+    "ttt= ss.transform(X_categor_removed_bag_words_hero_room)\n",
+    "print ttt.mean(), ttt.min(), ttt.max()\n",
+    "X_categor_removed_bag_words_hero_room_std_scal = StandardScaler().fit_transform(X_categor_removed_bag_words_hero_room)\n",
+    "print X_categor_removed_bag_words_hero_room_std_scal.mean(), X_categor_removed_bag_words_hero_room_std_scal.min(), X_categor_removed_bag_words_hero_room_std_scal.max()\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--- initial C calculation\n",
+      "{'C': [1e-11, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 100000000]}\n",
+      "best param =  {'C': 0.01} best score =  0.752012765217\n",
+      "mean: 0.50815, std: 0.00173, params: {'C': 1e-11}\n",
+      "mean: 0.74291, std: 0.00337, params: {'C': 0.0001}\n",
+      "mean: 0.75172, std: 0.00349, params: {'C': 0.001}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75197, std: 0.00351, params: {'C': 0.1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 10}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 1000}\n",
+      "mean: 0.75196, std: 0.00351, params: {'C': 100000000}\n",
+      "--- fine C tuning\n",
+      "{'C': array([ 0.005,  0.006,  0.007,  0.008,  0.009,  0.01 ,  0.011,  0.012,\n",
+      "        0.013,  0.014,  0.015])}\n",
+      "best param =  {'C': 0.0050000000000000001} best score =  0.752028818385\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0050000000000000001}\n",
+      "mean: 0.75203, std: 0.00350, params: {'C': 0.0060000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0070000000000000001}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0080000000000000002}\n",
+      "mean: 0.75202, std: 0.00350, params: {'C': 0.0090000000000000011}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.01}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.010999999999999999}\n",
+      "mean: 0.75201, std: 0.00350, params: {'C': 0.012}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.013000000000000001}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014}\n",
+      "mean: 0.75200, std: 0.00350, params: {'C': 0.014999999999999999}\n",
+      "Average time for single regression fit: 0:00:24.290951\n"
+     ]
+    }
+   ],
+   "source": [
+    "X_categor_removed_bag_words_hero_room_std_scal = StandardScaler().fit_transform(X_categor_removed_bag_words_hero_room)\n",
+    "calculate_logreg(X_categor_removed_bag_words_hero_room_std_scal)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<font color='blue'>\n",
+    "6. Постройте предсказания вероятностей победы команды Radiant для тестовой выборки с помощью лучшей из изученных моделей (лучшей с точки зрения AUC-ROC на кросс-валидации). Убедитесь, что предсказанные вероятности адекватные — находятся на отрезке [0, 1], не совпадают между собой (т.е. что модель не получилась константной).\n",
+    "</font>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Int64Index: 17177 entries, 6 to 114398\n",
+      "Columns: 102 entries, start_time to dire_first_ward_time\n",
+      "dtypes: float64(12), int64(90)\n",
+      "memory usage: 13.5 MB\n",
+      "None\n",
+      "[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18\n",
+      "  19  20  21  22  23  25  26  27  28  29  30  31  32  33  34  35  36  37\n",
+      "  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55\n",
+      "  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73\n",
+      "  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91\n",
+      "  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 109 110 112]\n",
+      "test_unique_heroes.size= 108\n"
+     ]
+    }
+   ],
+   "source": [
+    "features_test = pandas.read_csv('/Volumes/fast64/My/MachineLearning/week07/Assignment01/data/features_test.csv', index_col='match_id')\n",
+    "print features_test.info()\n",
+    "X_test = features_test.fillna(0)\n",
+    "\n",
+    "X_test_categor_removed= X_test.drop( heros+ ['lobby_type'], axis=1)\n",
+    "\n",
+    "test_unique_heroes = np.unique(X_test[heros])\n",
+    "print test_unique_heroes\n",
+    "print 'test_unique_heroes.size=', test_unique_heroes.size\n",
+    "\n",
+    "\n",
+    "# X_test_categor_removed_std_scal = StandardScaler().fit_transform(X_test_categor_removed)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "X_pick = np.zeros((X_test.shape[0], max(test_unique_heroes)))\n",
+    "\n",
+    "for i, match_id in enumerate(X_test.index):\n",
+    "    for p in xrange(5):\n",
+    "        X_pick[i, X_test.ix[match_id, 'r%d_hero' % (p+1)]-1] = 1\n",
+    "        X_pick[i, X_test.ix[match_id, 'd%d_hero' % (p+1)]-1] = -1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(17177, 122)\n"
+     ]
+    }
+   ],
+   "source": [
+    "num_rooms = 10\n",
+    "X_pick_room = np.zeros([X_test.shape[0], num_rooms])   # !!! two (())\n",
+    "\n",
+    "for i, match_id in enumerate(X_test.index):\n",
+    "    for p in xrange(10):\n",
+    "        X_pick_room[i, X_test.ix[match_id, 'lobby_type']+1] = 1\n",
+    "\n",
+    "from scipy.sparse import hstack\n",
+    "X_test_pick_heroes_room = np.concatenate((X_pick , X_pick_room),  axis=1)\n",
+    "\n",
+    "print X_test_pick_heroes_room.shape\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(17177, 122)\n",
+      "(17177, 91)\n",
+      "(17177, 213)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print X_test_pick_heroes_room.shape\n",
+    "print X_test_categor_removed.shape\n",
+    "\n",
+    "from scipy.sparse import hstack\n",
+    "X_test_categor_removed_bag_words = hstack([X_test_categor_removed, X_test_pick_heroes_room]).toarray()\n",
+    "print X_test_categor_removed_bag_words.shape\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.00184582386341 -23.7077646507 23.7063017051\n",
+      "-6.34992553174e-17 -23.7077646507 40.3487950291\n"
+     ]
+    }
+   ],
+   "source": [
+    "X_test_categor_removed_bag_words_std_scal = ss.transform(X_test_categor_removed_bag_words)\n",
+    "print X_test_categor_removed_bag_words_std_scal.mean(), X_test_categor_removed_bag_words_std_scal.min(), X_test_categor_removed_bag_words_std_scal.max()\n",
+    "\n",
+    "ttt = StandardScaler().fit_transform(X_categor_removed_bag_words_hero_room)\n",
+    "print ttt.mean(), ttt.min(), ttt.max()\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "LogisticRegression(C=0.005, class_weight=None, dual=False, fit_intercept=True,\n",
+       "          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,\n",
+       "          penalty='l2', random_state=555, solver='liblinear', tol=0.0001,\n",
+       "          verbose=0, warm_start=False)"
+      ]
+     },
+     "execution_count": 91,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "clf = LogisticRegression(penalty='l2', random_state=555, C=0.005)\n",
+    "clf.fit(X_categor_removed_bag_words_hero_room_std_scal, y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 93,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "num_good_predictions= 66595 num_bad_predictions= 30635\n",
+      "ratio= 68.4922349069\n"
+     ]
+    }
+   ],
+   "source": [
+    "# smoke check\n",
+    "rez=clf.predict_proba(X_categor_removed_bag_words_hero_room_std_scal)[:, 1]\n",
+    "\n",
+    "smoke_check = {\n",
+    "    'match_id': X.index, \n",
+    "    'radiant_win_prob': rez,\n",
+    "    'radiant_win_actual': y[X.index]\n",
+    "}\n",
+    "\n",
+    "smoke_check_dframe = pandas.DataFrame.from_dict(smoke_check)\n",
+    "\n",
+    "smoke_check_dframe.set_index('match_id')\n",
+    "\n",
+    "num_good_predictions=0\n",
+    "num_bad_predictions=0\n",
+    "for index, row in smoke_check_dframe.iterrows():\n",
+    "    if (row.radiant_win_prob >= 0.5 and row.radiant_win_actual == 1 or \n",
+    "       row.radiant_win_prob < 0.5 and row.radiant_win_actual == 0):\n",
+    "        num_good_predictions=num_good_predictions+1\n",
+    "    else:\n",
+    "        num_bad_predictions=num_bad_predictions+1\n",
+    "print 'num_good_predictions=', num_good_predictions, 'num_bad_predictions=', num_bad_predictions\n",
+    "print 'ratio=', 100.0*num_good_predictions/(num_good_predictions+num_bad_predictions)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 94,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Минимум предсказанных вероятностей = 0.00885013986788\n",
+      "Максимум предсказанных вероятностей = 0.996288227305\n"
+     ]
+    }
+   ],
+   "source": [
+    "rez=clf.predict_proba(X_test_categor_removed_bag_words_std_scal)[:, 1]\n",
+    "\n",
+    "print \"Минимум предсказанных вероятностей =\",min(rez)\n",
+    "print \"Максимум предсказанных вероятностей =\", max(rez)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "test_check = {\n",
+    "    'match_id': X_test.index, \n",
+    "    'radiant_win': rez\n",
+    "}\n",
+    "\n",
+    "test_check_dframe = pandas.DataFrame.from_dict(test_check)\n",
+    "test_check_dframe.set_index('match_id')\n",
+    "\n",
+    "test_check_dframe.to_csv('/Volumes/fast64/My/MachineLearning/week07/Dota2_01/dota2-kaggle-01.csv', index=False, columns=['match_id', 'radiant_win'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.11"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}

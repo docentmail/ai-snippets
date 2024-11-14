@@ -1,0 +1,13 @@
+Metric Classification Methods
+
+Metric methods perform classification based on similarity, which allows them to work on data with a complex structure - the main thing is that the distance between objects can be measured. We will study the k-nearest neighbors method, as well as a way to generalize it to regression problems using kernel smoothing.
+
+Metric Methods
+Nearest Neighbors Method
+Summary
+Parzen Window Method
+Metric Classification Methods in Regression Recovery Problems
+Outlier Detection
+Quiz: Metric Methods
+Assignment: Choosing the Number of Neighbors
+Assignment: Choosing a Metric
