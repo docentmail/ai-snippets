@@ -28,12 +28,46 @@ This module discusses key linear methods like Support Vector Machines (SVM) and 
   - **[assignment.ipynb](assignment_code02/assignment.ipynb)** - the Pyhon Notebook with solution
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
+## Used Technologies and Packages
 
-### What Input Data Is Used in This Task
-TBD
 
-### Used Technologies and Packages
-TBD
+### task 1
+1. **NumPy**
+   - Used for numerical computations and creating arrays.
+   - Generated grid of `C` values for parameter tuning in SVM (`np.power`).
 
+2. **Pandas**
+   - Loaded data and provided dataframe manipulations.
+
+3. **Scikit-learn**
+   - **Datasets**:
+     - `fetch_20newsgroups`: Loaded the 20 Newsgroups dataset with specific categories.
+   - **Feature Extraction**:
+     - `TfidfVectorizer`: Transformed text data into TF-IDF representations.
+   - **Support Vector Machines**:
+     - `SVC`: Implemented SVM with a linear kernel.
+   - **Model Selection**:
+     - `GridSearchCV`: Performed grid search for hyperparameter tuning.
+   - **Cross-validation**:
+     - `KFold`: Split data for cross-validation.
+
+4. **Miscellaneous**
+   - Accessed the vocabulary and feature mappings of the `TfidfVectorizer`.
+   - Extracted coefficients from the trained SVM model to analyze feature importance.
+
+
+
+### task 2
+1. **NumPy**
+   - Used for numerical computations and data manipulation.
+
+2. **Pandas**
+   - Read CSV data from a file using `read_csv`.
+   - Selected and prepared feature columns (`[['B', 'C']]`) and target labels (`['A']`) for training.
+
+3. **Scikit-learn**
+   - **Support Vector Machines**:
+     - `SVC`: Implemented an SVM model with a linear kernel and specific hyperparameter `C=100000`.
+   - Extracted:
+     - Support vectors using the `support_vectors_` attribute.
+     - Indices of support vectors using the `support_` attribute.

@@ -19,17 +19,11 @@ Unsupervised learning focuses on identifying patterns in data. This module cover
   - **[assignment.ipynb](assignment_code/assignment.ipynb)** - the Pyhon Notebook with solution
 
 
+### Libraries and Specific Parts Used:
+1. **numpy** - Used for numerical computations, imported multiple times.
+2. **imread** - Likely used for reading image data.
+3. **skimage** - Possibly used for image processing tasks.
+4. **KMeans** - Indicates usage of K-Means clustering, a machine learning algorithm.
+5. **pprint** - For pretty-printing data structures.
+6. **matplotlib** - Used for plotting and visualizing data.
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
-
-### What Input Data Is Used in This Task
-TBD
-
-### Used Technologies and Packages
-TBD
-
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb

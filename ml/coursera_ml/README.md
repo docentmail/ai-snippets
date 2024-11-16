@@ -10,6 +10,7 @@
 - [Linear Classification Methods](#linear-classification-methods)
 - [Support Vector Machine and Logistic Regression](#support-vector-machine-and-logistic-regression)
 - [Logistic Regression](#logistic-regression)
+- [Classification Quality Metrics](#classification-quality-metrics)
 - [Linear Regression](#linear-regression)
 - [Dimensionality Reduction and Principal Component Analysis](#dimensionality-reduction-and-principal-component-analysis)
 - [Algorithm Ensembles](#algorithm-ensembles)
@@ -44,10 +45,15 @@
   - Nonlinear Dimensionality Reduction Methods  
 - **Partial Training**: Applying Clustering and Classification to Partial Learning Problems
 
+Python, numpy, pandas, GradientBoostingClassifier, LogisticRegression, sklearn.cross_validation, StandardScaler, json, bz2, AUC-ROC, datetime, scipy.sparse, sklearn.ensemble, sklearn.grid_search, sklearn.linear_model, sklearn.preprocessing, warnings, train_test_split, numpy, log_loss, GradientBoostingClassifier, matplotlib, RandomForestClassifier, RandomForestRegressor, KFold, PCA, DictVectorizer, TfidfVectorizer, hstack, Ridge, SVC, accuracy_score, roc_auc_score, precision_recall_curve, Scikit-learn, Matplotlib, Math, Sys, sklearn.model_selection, sklearn.neighbors, collections, klearn.tree.DecisionTreeClassifier, matplotlib.pyplot, sklearn.metrics.accuracy_score, SciPy.stats.pearsonr, re, collections
+
+
 # Introduction to Data Analysis and Machine Learning
 **Go to [Week 01 Part 01](week01_01/README.md)**
 
-Welcome! In the first module of the course, we will introduce the tasks solved by machine learning, define the basic concepts, and introduce necessary notations. Additionally, we will discuss the main Python libraries for data work (NumPy, Pandas, Scikit-Learn) required for the practical assignments throughout the course.
+Welcome! In the first module of the course, we will introduce the tasks solved by machine learning, define the basic concepts, and introduce necessary notations. Additionally, we will discuss the main Python libraries for data work (NumPy, Pandas, Scikit-Learn) required for the practical assignments throughout the course.\
+Pandas, NumPy, SciPy.stats.pearsonr, re, collections
+
 
 - **Welcome**
   - Introduction and course overview
@@ -63,7 +69,9 @@ Welcome! In the first module of the course, we will introduce the tasks solved b
 # Logical Classification Methods
 **Go to [Week 01 Part 02](week01_02/README.md)**
 
-Logical methods classify objects based on simple rules, making them interpretable and easy to implement. Combined into ensembles, they can solve many tasks with high quality. This module covers decision trees and their combination into ensembles known as random forests.
+Logical methods classify objects based on simple rules, making them interpretable and easy to implement. Combined into ensembles, they can solve many tasks with high quality. This module covers decision trees and their combination into ensembles known as random forests.\
+numpy, pandas, sklearn.tree.DecisionTreeClassifier, matplotlib.pyplot, sklearn.metrics.accuracy_score
+
 
 - Decision Trees
 - Decision Tree Construction Algorithm
@@ -74,7 +82,9 @@ Logical methods classify objects based on simple rules, making them interpretabl
 # Metric Classification Methods
 **Go to [Week 02 Part 01](week02_01/README.md)**
 
-Metric methods classify based on similarity, enabling them to work with complex-structured data as long as distances can be measured between objects. This module introduces the k-Nearest Neighbors method and regression generalization using kernel smoothing.
+Metric methods classify based on similarity, enabling them to work with complex-structured data as long as distances can be measured between objects. This module introduces the k-Nearest Neighbors method and regression generalization using kernel smoothing.\
+pandas, numpy, sklearn, sklearn.model_selection, sklearn.neighbors, collections
+
 
 - Metric Methods
   - Nearest Neighbor Method
@@ -88,7 +98,8 @@ Metric methods classify based on similarity, enabling them to work with complex-
 **Go to [Week 02 Part 02](week02_02/README.md)**
 
 
-Linear models are one of the most studied classes of algorithms in machine learning. They are scalable and widely used for large datasets. This module covers stochastic gradient methods for linear classifier tuning, regularization, and practical nuances of linear methods.
+Linear models are one of the most studied classes of algorithms in machine learning. They are scalable and widely used for large datasets. This module covers stochastic gradient methods for linear classifier tuning, regularization, and practical nuances of linear methods.\
+NumPy, Pandas, Scikit-learn
 
 - Linear Classification Methods
   - Stochastic Gradient Method
@@ -99,7 +110,8 @@ Linear models are one of the most studied classes of algorithms in machine learn
 # Support Vector Machine and Logistic Regression
 **Go to [03 Part 01](week03_01/README.md)**
 
-This module discusses key linear methods like Support Vector Machines (SVM) and Logistic Regression, their applications, and advantages.
+This module discusses key linear methods like Support Vector Machines (SVM) and Logistic Regression, their applications, and advantages.\
+NumPy, Pandas, Scikit-learn, 
 
 - Support Vector Machines
   - SVM for Nonlinear Cases
@@ -107,7 +119,8 @@ This module discusses key linear methods like Support Vector Machines (SVM) and 
 - **Assignment**: Text Analysis
 
 # Logistic Regression
-**Go to [Week 03 Part 02](week03_02/README.md)**
+**Go to [Week 03 Part 02](week03_02/README.md)**\
+NumPy, Pandas, Scikit-learn, Matplotlib, Math, Sys
 
 - Logistic Regression
 - Regularized Logistic Regression
@@ -116,7 +129,9 @@ This module discusses key linear methods like Support Vector Machines (SVM) and 
 # Classification Quality Metrics
 **Go to [Week 03 Part 03](week03_03/README.md)**
 
-In machine learning, there are numerous quality metrics, each with its own practical interpretation and focus on measuring a specific aspect of a solution. In this module, we will discuss the various metrics for binary and multiclass classification and explore methods for reducing multiclass problems to binary classification tasks.
+In machine learning, there are numerous quality metrics, each with its own practical interpretation and focus on measuring a specific aspect of a solution. In this module, we will discuss the various metrics for binary and multiclass classification and explore methods for reducing multiclass problems to binary classification tasks.\
+pandas, SVC, accuracy_score, roc_auc_score, precision_recall_curve
+
 
 Quality Metrics
 
@@ -130,7 +145,9 @@ Quality Metrics in Classification
 # Linear Regression
 **Go to [Week 04 Part 01](week04_01/README.md)**
 
-This module explores linear models for regression and their connection to singular value decomposition of the object-feature matrix.
+This module explores linear models for regression and their connection to singular value decomposition of the object-feature matrix.\
+pandas, DictVectorizer, TfidfVectorizer, hstack, Ridge
+
 
 - Solving Multidimensional Linear Regression with SVD
 - Ridge Regression
@@ -140,7 +157,8 @@ This module explores linear models for regression and their connection to singul
 # Dimensionality Reduction and Principal Component Analysis
 **Go to [Week 04 Part 02](week04_02/README.md)**
 
-Dimensionality reduction is crucial for practical applications, such as speeding up model performance. This module covers feature selection approaches and Principal Component Analysis (PCA).
+Dimensionality reduction is crucial for practical applications, such as speeding up model performance. This module covers feature selection approaches and Principal Component Analysis (PCA).\
+pandas, PCA, numpy
 
 - Principal Component Analysis
 - **Assignment**: Stock Index Compilation
@@ -148,7 +166,9 @@ Dimensionality reduction is crucial for practical applications, such as speeding
 # Algorithm Ensembles
 **Go to [Week 05 Part 01](week05_01/README.md)**
 
-Combining multiple models into ensembles can significantly improve overall quality. This module discusses the basics of ensembles and gradient boosting.
+Combining multiple models into ensembles can significantly improve overall quality. This module discusses the basics of ensembles and gradient boosting.\
+pandas, train_test_split, numpy, log_loss, GradientBoostingClassifier, matplotlib, RandomForestClassifier, RandomForestRegressor, KFold
+
 
 - Bagging and Random Forest
 - Gradient Boosting
@@ -176,6 +196,7 @@ Unsupervised learning focuses on identifying patterns in data. This module cover
 - Hierarchical Clustering
 - Nonlinear Dimensionality Reduction Methods
 - **Assignment**: Reducing Image Color Count
+  Python, numpy, imread, skimage, KMeans, pprint, matplotlib
 
 # Semi-Supervised Learning
 **Go to [Week 06 Part 02](week06_02/README.md)**
@@ -188,7 +209,10 @@ Semi-supervised learning lies between supervised learning and clustering, handli
 # Machine Learning in Practical Applications
 **Go to [Week 07](week07/README.md)**
 
-This module summarizes the course, reviews data analysis stages, and explores practical tasks to prepare for the final project.
+This module summarizes the course, reviews data analysis stages, and explores practical tasks to prepare for the final project./
+GradientBoostingClassifier, LogisticRegression, sklearn.cross_validation, StandardScaler, numpy, pandas, json, bz2, AUC-ROC, datetime, scipy.sparse, sklearn.ensemble, sklearn.grid_search, sklearn.linear_model, sklearn.preprocessing, warnings
+
+
 
 - Data Analysis Stages
 - Handling Numerical and Text Features

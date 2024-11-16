@@ -25,16 +25,9 @@ Quality Metrics in Classification
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
-
-### What Input Data Is Used in This Task
-TBD
-
-### Used Technologies and Packages
-TBD
-
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+## Libraries and Specific Parts Used:
+1. **pandas** - Used for data manipulation and analysis.
+2. **SVC** - Support Vector Classifier for classification tasks.
+3. **accuracy_score** - Used for evaluating model accuracy.
+4. **roc_auc_score** - Used for evaluating model performance with the ROC-AUC metric.
+5. **precision_recall_curve** - Used for calculating and plotting precision-recall curves.

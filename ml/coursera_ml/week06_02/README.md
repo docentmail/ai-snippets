@@ -18,16 +18,28 @@ Semi-supervised learning lies between supervised learning and clustering, handli
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
+# Used Technologies and Packages
 
-### What Input Data Is Used in This Task
-TBD
+### Python Libraries and Packages
+1. **NumPy**
+   - Used for numerical computations and creating arrays.
+   - Generated grid of `C` values for parameter tuning in SVM (`np.power`).
 
-### Used Technologies and Packages
-TBD
+2. **Pandas**
+   - Loaded data and provided dataframe manipulations.
 
+3. **Scikit-learn**
+   - **Datasets**:
+     - `fetch_20newsgroups`: Loaded the 20 Newsgroups dataset with specific categories.
+   - **Feature Extraction**:
+     - `TfidfVectorizer`: Transformed text data into TF-IDF representations.
+   - **Support Vector Machines**:
+     - `SVC`: Implemented SVM with a linear kernel.
+   - **Model Selection**:
+     - `GridSearchCV`: Performed grid search for hyperparameter tuning.
+   - **Cross-validation**:
+     - `KFold`: Split data for cross-validation.
 
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+4. **Miscellaneous**
+   - Accessed the vocabulary and feature mappings of the `TfidfVectorizer`.
+   - Extracted coefficients from the trained SVM model to analyze feature importance.

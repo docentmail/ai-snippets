@@ -20,16 +20,9 @@ This module explores linear models for regression and their connection to singul
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
-
-### What Input Data Is Used in This Task
-TBD
-
-### Used Technologies and Packages
-TBD
-
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+## Libraries and Specific Parts Used:
+1. **pandas** - Likely used for data manipulation and analysis.
+2. **DictVectorizer** - Used for converting feature mappings into a vectorized format.
+3. **TfidfVectorizer** - Used for transforming text data into TF-IDF feature representations.
+4. **hstack** - Used for stacking arrays horizontally.
+5. **Ridge** - Ridge regression algorithm for predictive modeling.

@@ -1,13 +1,21 @@
-# gen_ai
-The folder containing examples for the generative AI.
+<p style="font-size: 26px;"> Generative AI exercises </p>
+
+The folder containing Generative AI exercises.\
 LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain
 
 
-## Content
+**Table of Contents**
 
-### deeplearning_01
+1. [Building Systems with the ChatGPT API](#building-systems-with-the-chatgpt-api)
+2. [Embeding hello world example](#embeding-hello-world-example)
+3. [RAG Albert Einstein example](#rag-albert-einstein-example)
+4. [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+
+
+
+## [Building Systems with the ChatGPT API.](deeplearning_01/README.md) &nbsp;&nbsp;deeplearning.ai course &nbsp;&nbsp;<span style="color: green;">100% Completed</span>
 Adopted examples from [Building Systems with the ChatGPT API](https://learn.deeplearning.ai/courses/chatgpt-building-system/) 
-[deeplearning.ai](https://learn.deeplearning.ai)course\
+[deeplearning.ai](https://learn.deeplearning.ai) course\
 Main topics:
 - how an LLM works
 - tokenizer and why it can't reverse lollipop.
@@ -20,9 +28,7 @@ Main topics:
 Python, LLM, OpenAI API, Chain of Thought Reasoning, Chaining Prompts, Evaluation\
 OpenAI: OpenAI completions API, OpenAI Moderation API,  OpenAI API key
 
-### embeding_hello_world
-
-Embeding hello world example.
+## [Embeding hello world example](embeding_hello_world/README.md)
 
 Generate embedding vector from text using OpenAI API and chippest text-embedding-3-small model
 
@@ -30,9 +36,7 @@ Python, Embeddings, LLM, OpenAI API\
 OpenAI: client, LLMs 'text-embedding-3-small', OpenAI API key
 
 
-### rag_albert_einstein
-
-RAG Albert Einstein example
+## [RAG Albert Einstein example](rag_albert_einstein/README.md)
 
 This is an example of using RAG.\
 Download a [page](https://www.biography.com/scientists/albert-einstein) from the Internet.\
@@ -43,8 +47,7 @@ RAG, embeddings, LLM, Vector DB\
 Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant, OpenAI\
 OpenAI: client, LLMs 'text-embedding-3-small' and 'gpt-3.5-turbo-instruct', OpenAI API key
 
-### text_and_image
-Multimodal (text + image) LLM capabilities.
+### [Multimodal \(text + image\) LLM capabilities.](text_and_image/README.md)
 
 - Using the OpenAI HTTP call.
 - Using the OpenAI Python Client. 

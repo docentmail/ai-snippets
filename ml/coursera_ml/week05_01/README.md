@@ -27,17 +27,16 @@ Combining multiple models into ensembles can significantly improve overall quali
   - **[assignment.ipynb](assignment_code02/assignment.ipynb)** - the Pyhon Notebook with solution
 
 
-
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
-
-### What Input Data Is Used in This Task
-TBD
-
-### Used Technologies and Packages
-TBD
-
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+## Libraries and Specific Parts Used:
+### Assignment 1
+1. **pandas** - Likely used for data manipulation and analysis.
+2. **RandomForestRegressor** - A random forest algorithm for regression tasks.
+3. **KFold** - Used for k-fold cross-validation.
+## Assignment 2
+1. **pandas** - Likely used for data manipulation and analysis.
+2. **train_test_split** - Used for splitting data into training and testing sets.
+3. **numpy** - Used for numerical computations.
+4. **log_loss** - Indicates usage of the log-loss metric for evaluating model performance.
+5. **GradientBoostingClassifier** - A gradient boosting algorithm for classification tasks.
+6. **matplotlib** - Used for plotting and visualizing data.
+7. **RandomForestClassifier** - A random forest algorithm for classification tasks.

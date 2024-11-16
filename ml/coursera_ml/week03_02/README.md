@@ -17,16 +17,44 @@
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
+## Used Technologies and Packages
 
-### What Input Data Is Used in This Task
-TBD
+### Python Libraries and Packages
+1. **NumPy**
+   - Array creation and manipulation.
+   - Mathematical operations like `dot`, `sqrt`, `exp`.
 
-### Used Technologies and Packages
-TBD
+2. **Pandas**
+   - Reading CSV files (`read_csv`).
+   - Dataframe manipulations such as selecting columns and applying transformations.
 
+3. **Scikit-learn**
+   - **Linear Models**:
+     - `SGDClassifier` for logistic regression.
+     - `LogisticRegression` for L1 and L2-penalized logistic regression.
+   - **Support Vector Machines**:
+     - `SVC` for classification tasks.
+   - **Metrics**:
+     - `roc_auc_score` for computing AUC-ROC metrics.
+   - **Cross-validation**:
+     - `KFold` for splitting data into training and testing sets.
 
+4. **Matplotlib**
+   - `pyplot` for plotting the ROC curve.
 
+5. **Math**
+   - Core mathematical functions like `sqrt` and `pow`.
 
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+6. **Other Modules**
+   - `sys`: Used, but the exact functionality implemented in this notebook is unclear.
+
+### Additional Functionalities and Algorithms
+1. **Gradient Descent**
+   - Custom implementation for logistic regression optimization.
+   - Iterative weight updates based on gradients.
+
+2. **Sigmoid Function**
+   - Defined explicitly for calculating probabilities.
+
+3. **Manual Logistic Regression**
+   - Direct implementation of logistic regression using mathematical formulas and iterations.

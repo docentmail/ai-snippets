@@ -18,16 +18,7 @@ Dimensionality reduction is crucial for practical applications, such as speeding
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
-
-### What Input Data Is Used in This Task
-TBD
-
-### Used Technologies and Packages
-TBD
-
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+### Libraries and Specific Parts Used:
+1. **pandas** - Likely used for data manipulation and analysis.
+2. **PCA** - Principal Component Analysis for dimensionality reduction.
+3. **numpy** - Used for numerical computations.

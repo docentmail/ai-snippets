@@ -62,3 +62,5 @@ Go to the folder [coursera_ml](coursera_ml/README.md)
   - Hierarchical Clustering  
   - Nonlinear Dimensionality Reduction Methods  
 - **Partial Training**: Applying Clustering and Classification to Partial Learning Problems
+
+Python, numpy, pandas, GradientBoostingClassifier, LogisticRegression, sklearn.cross_validation, StandardScaler, json, bz2, AUC-ROC, datetime, scipy.sparse, sklearn.ensemble, sklearn.grid_search, sklearn.linear_model, sklearn.preprocessing, warnings, train_test_split, numpy, log_loss, GradientBoostingClassifier, matplotlib, RandomForestClassifier, RandomForestRegressor, KFold, PCA, DictVectorizer, TfidfVectorizer, hstack, Ridge, SVC, accuracy_score, roc_auc_score, precision_recall_curve, Scikit-learn, Matplotlib, Math, Sys, sklearn.model_selection, sklearn.neighbors, collections, klearn.tree.DecisionTreeClassifier, matplotlib.pyplot, sklearn.metrics.accuracy_score, SciPy.stats.pearsonr, re, collections

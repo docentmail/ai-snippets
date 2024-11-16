@@ -23,16 +23,20 @@ Linear models are one of the most studied classes of algorithms in machine learn
 
 
 
-### What Concrete Machine Learning Tasks Were Required to Be Solved in This Assignment
-TBD
+## Used Technologies and Packages
 
-### What Input Data Is Used in This Task
-TBD
+### Python Libraries and Packages
+1. **NumPy**
+   - Utilized for numerical operations and data handling.
 
-### Used Technologies and Packages
-TBD
+2. **Pandas**
+   - Loaded training and testing datasets from CSV files using `read_csv`.
+   - Selected specific columns for features and labels.
 
-
-
-
-ml/coursera_ml/week02_02/assignment_code/.ipynb_checkpoints/assignment.ipynb
+3. **Scikit-learn**
+   - **Preprocessing**:
+     - `StandardScaler`: Standardized features by removing the mean and scaling to unit variance.
+   - **Linear Models**:
+     - `Perceptron`: Implemented a perceptron model for binary classification.
+   - **Metrics**:
+     - `accuracy_score`: Evaluated model accuracy on the test set.
