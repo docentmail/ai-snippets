@@ -23,6 +23,9 @@ Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022
 - Embeding hello world example
 - RAG Albert Einstein example
 - Multimodal (text + image) LLM capabilities
+- Run Anthropic Computer Use Demo locally in Docker
+- Experimenting with Anthropic's basic API use case.
+- Anthropic API Experiments
 
 ## [Classical machine learning](ml/README.md)
 Folder with examples for classical machine learning.\
