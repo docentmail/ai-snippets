@@ -1,14 +1,24 @@
 # Anthropic API Testing
-This folder contains implementation of Anthropic's basic API use cases, and prebuilt computer use AI functionality.\
-This README aims to provide easy to follow steps on how to install this and use it yourself, step by step.
+This folder contains experiments with Anthropic's Computer Use AI functionality.
 
-### Prerequisites
-* Python 3.11 or later installed for Phase 1
-* Latest version of Docker installed for Phase 2
 
-Start by cloning the repository on your local machine. I will walk you through setting up the Python environment and Docker image to use the services now.
 
-## Phase 1: Basic Anthropic API calls
+## Files in the folder:
+**computer_use_001.py**\
+Anthropic "Computer Use" API usage Example
+
+**computer_use_002.py**\
+This script uses the Anthropic computer use API to get the coordinates of a given element on the provided screenshot.\
+The work is done in one request to LLM.\
+screenshot simple_form_672×890.png dimension is 672×890\
+Request ot the API: "Enter 'Moore' into the 'last name' input field"
+
+## Prerequisites
+* Python 3.11 or later installed
+* Anthropic API key
+
+
+## How to run
 Let's start by getting our Anthropic API key. Visit [this](https://console.anthropic.com/settings/keys) site to find you API key, and load some credits into your account [here](https://console.anthropic.com/settings/billing).
 
 ### Set up a Python virtual environment:
