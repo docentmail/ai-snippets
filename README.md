@@ -1,4 +1,4 @@
-<p style="font-size: 26px;"> AI exercises and experements</p>
+<p style="font-size: 26px;"> AI exercises and experiments</p>
 Examples of short code snippets to experiment with AI functionality.\
 Classical machine learning, Generative AI, Miscellaneous unsorted utilities and examples.\
  <br/>

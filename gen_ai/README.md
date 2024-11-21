@@ -7,8 +7,8 @@ LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic 
 **Table of Contents**
 
 - [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
-- [Experementing with Anthropic's basic API use case.](#experementing-with-anthropics-basic-api-use-case)
-- [Anthropic API Experements](#anthropic-api-experements)
+- [Experimenting with Anthropic's basic API use case.](#experimenting-with-anthropics-basic-api-use-case)
+- [Anthropic API Experiments](#anthropic-api-experiments)
 - [Building Systems with the ChatGPT API.   deeplearning.ai course   100% Completed](#building-systems-with-the-chatgpt-api-deeplearningai-course-100-completed)
 - [Embeding hello world example](#embeding-hello-world-example)
 - [RAG Albert Einstein example](#rag-albert-einstein-example)
@@ -20,13 +20,13 @@ Get started with computer use on Claude, with reference implementations of Anthr
 
 Docker, Anthropic Api, Anthropic Computer Use, Python, claude-3-5-sonnet-20241022
 
-## [Experementing with Anthropic's basic API use case.](anthropic_API_hello_world/README.md)
+## [Experimenting with Anthropic's basic API use case.](anthropic_API_hello_world/README.md)
 Just to test your API key and connection to model "claude-3-5-sonnet-20241022"
 
 Anthropic Api,  Python, claude-3-5-sonnet-20241022
 
 
-## [Anthropic API Experements](anthropic_computer_use_api/README.md)
+## [Anthropic API Experiments](anthropic_computer_use_api/README.md)
 This folder contains experiments with Anthropic's Computer Use AI functionality.
 
 **computer_use_001.py**\
