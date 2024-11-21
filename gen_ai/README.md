@@ -1,17 +1,41 @@
 <p style="font-size: 26px;"> Generative AI exercises </p>
 
 The folder containing Generative AI exercises.\
-LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain
+LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022
 
 
 **Table of Contents**
 
-1. [Building Systems with the ChatGPT API](#building-systems-with-the-chatgpt-api)
-2. [Embeding hello world example](#embeding-hello-world-example)
-3. [RAG Albert Einstein example](#rag-albert-einstein-example)
-4. [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+- [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
+- [Experementing with Anthropic's basic API use case.](#experementing-with-anthropics-basic-api-use-case)
+- [Anthropic API Experements](#anthropic-api-experements)
+- [Building Systems with the ChatGPT API.   deeplearning.ai course   100% Completed](#building-systems-with-the-chatgpt-api-deeplearningai-course-100-completed)
+- [Embeding hello world example](#embeding-hello-world-example)
+- [RAG Albert Einstein example](#rag-albert-einstein-example)
+  - [Multimodal (text + image) LLM capabilities.](#multimodal-text--image-llm-capabilities)
 
 
+## [Run Anthropic Computer Use Demo locally in Docker](anthropic_computer_use_docker/README.md)
+Get started with computer use on Claude, with reference implementations of Anthropic Computer Use Demo.
+
+Docker, Anthropic Api, Anthropic Computer Use, Python, claude-3-5-sonnet-20241022
+
+## [Experementing with Anthropic's basic API use case.](anthropic_API_hello_world/README.md)
+Just to test your API key and connection to model "claude-3-5-sonnet-20241022"
+
+Anthropic Api,  Python, claude-3-5-sonnet-20241022
+
+
+## [Anthropic API Experements](anthropic_computer_use_api/README.md)
+This folder contains experiments with Anthropic's Computer Use AI functionality.
+
+**computer_use_001.py**\
+Anthropic "Computer Use" API usage Example
+
+**computer_use_002.py**\
+This script uses the Anthropic computer use API to get the coordinates of a given element on the provided screenshot.
+
+Anthropic Api, Anthropic Computer Use, Python, claude-3-5-sonnet-20241022
 
 ## [Building Systems with the ChatGPT API.](deeplearning_01/README.md) &nbsp;&nbsp;deeplearning.ai course &nbsp;&nbsp;<span style="color: green;">100% Completed</span>
 Adopted examples from [Building Systems with the ChatGPT API](https://learn.deeplearning.ai/courses/chatgpt-building-system/) 

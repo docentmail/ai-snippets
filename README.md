@@ -16,6 +16,7 @@ Classical machine learning, Generative AI, Miscellaneous unsorted utilities and 
 The folder containing examples for the Generative AI.\
 Python, LLM, Chain of Thought Reasoning, Chaining Prompts, 
 Evaluation, OpenAI completions API, OpenAI Moderation API, Embeddings, text-embedding-3-small, gpt-3.5-turbo-instruct, gpt-4o-mini, gpt-4o, RAG, Vector DB, Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant; Multimodal LLM.
+Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022
 
 
 - Building Systems with the ChatGPT API
