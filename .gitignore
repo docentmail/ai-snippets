@@ -3,6 +3,9 @@ bin/
 pyvenv.cfg
 share/
 
+# Jupyter Notebook
+etc/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
