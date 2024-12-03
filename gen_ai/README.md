@@ -35,6 +35,11 @@ Anthropic "Computer Use" API usage Example
 **computer_use_002.py**\
 This script uses the Anthropic computer use API to get the coordinates of a given element on the provided screenshot.
 
+**computer_use_003.py**\
+This script uses the Anthropic computer use API to get the coordinates of the element on the current screenshot.\
+The element on the current screenshot should correspont to the a marked with red dot element on the provided image.
+
+
 Anthropic Api, Anthropic Computer Use, Python, claude-3-5-sonnet-20241022
 
 ## [Building Systems with the ChatGPT API.](deeplearning_01/README.md) &nbsp;&nbsp;deeplearning.ai course &nbsp;&nbsp;<span style="color: green;">100% Completed</span>

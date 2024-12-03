@@ -13,6 +13,12 @@ The work is done in one request to LLM.\
 screenshot simple_form_672×890.png dimension is 672×890\
 Request ot the API: "Enter 'Moore' into the 'last name' input field"
 
+
+**computer_use_003.py**\
+This script uses the Anthropic computer use API to get the coordinates of the element on the current screenshot.\
+The element on the current screenshot should correspont to the a marked with red dot element on the provided image.\
+The work is done in one request to LLM.
+
 ## Prerequisites
 * Python 3.11 or later installed
 * Anthropic API key
