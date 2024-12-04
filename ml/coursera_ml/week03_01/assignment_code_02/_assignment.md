@@ -69,9 +69,15 @@ for a in gs. grid_scores_ :
 
 1. Load objects from the 20 newsgroups news dataset related to the categories "space" and "atheism" (instructions are given above).
 2. Calculate TF-IDF features for all texts. Please note that in this task we ask you to calculate TF-IDF for all data. With this approach, it turns out that the features on the training set use information from the test set, but this is quite natural, since we do not use the values ​​of the target variable from the test. In practice, it is not uncommon for the features of the test set objects to be known at the time of training, and therefore they can be used when training the algorithm.
-3. Find the minimum best parameter C from the set [10^5, 10^4,... 104, 105] for SVM with a linear kernel (kernel=’linear’) using cross-
+3. Find the minimum best parameter C from the set [10^-5 , 10^-4 ,... 10^4 , 10^5 ]
+for SVM with a linear kernel (kernel=’linear’) using cross-validation on 5 blocks. Specify the parameter random_state=241 for both
+SVM and KFold. Use the proportion of correct answers (accuracy) as a quality measure.
+4. Train SVM on the entire sample with the best parameter C found in
+the previous step.
+5. Find 10 words with the largest absolute weight. They are
+the answer to this task. Specify them separated by commas, in lowercase, in lexicographic order.
 
-```
-validation over 5 blocks. Specify the random_state=241 parameter for both SVM and KFold. Use the proportion of correct answers (accuracy) as a quality measure. ```
-4. Train the SVM on the entire sample with the best parameter C found
-on the previous
+The answer to each task is a text file containing the answer in
+the first line. Please note that the submitted files should not contain a line break at the end.
+
+This nuance is a limitation of the Coursera platform. We are working to remove this limitation.
