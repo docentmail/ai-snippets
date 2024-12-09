@@ -1,6 +1,6 @@
 <p style="font-size: 26px;"> AI exercises and experiments</p>
 Examples of short code snippets to experiment with AI functionality.\
-Classical machine learning, Generative AI, Miscellaneous unsorted utilities and examples.\
+Classical machine learning, Generative AI, Multi-agent Collaboration, Miscellaneous unsorted utilities and examples.\
  <br/>
  <br/>
   
@@ -35,6 +35,18 @@ Python, numpy, pandas, GradientBoostingClassifier, LogisticRegression, sklearn.c
 - "Data Analysis and Machine Learning". Coursera.com. 8 weeks.
 
 
+## [Experimenting with Multi-Agent Frameworks](agents/README.md)
+
+The folder containing experiments with various Multi-Agent Frameworks.\
+Multi-agent Collaboration, MetaGPT, Docker, Standardized Operating Procedures (SOPs), Code Generation
+
+- Run methaGPT snake game generation in the Docker
+
+
 ## [Miscellaneous utilities](unplugged/README.md)
 Miscellaneous unsorted utilities and examples.
+
+- Utilites to verify the identity of the python runtime environment
+- Utilites to draw boundary rectangles
+- Set OS variables for Jupyter Notebook opened in VS Code
 
