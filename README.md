@@ -9,6 +9,7 @@ Classical machine learning, Generative AI, Multi-agent Collaboration, Miscellane
 - [Generative AI](#generative-ai)
 - [Classical machine learning](#classical-machine-learning)
 - [Miscellaneous utilities](#miscellaneous-utilities)
+- [Experimenting with Multi-Agent Frameworks](#experimenting-with-multi-agent-frameworks)
 
 
 ## [Generative AI](gen_ai/README.md)

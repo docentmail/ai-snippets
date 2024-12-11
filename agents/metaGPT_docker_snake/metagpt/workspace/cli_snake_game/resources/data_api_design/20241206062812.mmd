@@ -1,0 +1,21 @@
+
+classDiagram
+    class Main {
+        +main() void
+    }
+    class Game {
+        -score int
+        -snake list
+        -food tuple
+        -is_game_over bool
+        +start_game() void
+        +process_input() void
+        +update_game_state() void
+        +render() void
+    }
+    class Utils {
+        +clear_screen() void
+        +generate_food() tuple
+    }
+    Main --> Game
+    Game --> Utils

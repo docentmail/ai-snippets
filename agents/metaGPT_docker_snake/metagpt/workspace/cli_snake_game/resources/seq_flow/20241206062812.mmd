@@ -1,0 +1,13 @@
+
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant U as Utils
+    M->>G: start_game()
+    loop Game Loop
+        G->>G: process_input()
+        G->>G: update_game_state()
+        G->>G: render()
+        G->>U: clear_screen()
+    end
+    Note over G: Game ends when is_game_over is True
