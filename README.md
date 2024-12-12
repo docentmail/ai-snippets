@@ -16,10 +16,12 @@ Classical machine learning, Generative AI, Multi-agent Collaboration, Miscellane
 
 The folder containing examples for the Generative AI.\
 Python, LLM, Chain of Thought Reasoning, Chaining Prompts, 
-Evaluation, OpenAI completions API, OpenAI Moderation API, Embeddings, text-embedding-3-small, gpt-3.5-turbo-instruct, gpt-4o-mini, gpt-4o, RAG, Vector DB, Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant; Multimodal LLM.
-Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022
+Evaluation, OpenAI completions API, OpenAI Moderation API, Embeddings, text-embedding-3-small, gpt-3.5-turbo-instruct, gpt-4o-mini, gpt-4o, RAG, Vector DB, Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant, Multimodal LLM.\
+Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
+Graph-based RAG lightRAG framework, nano-vectordb Vector DB
 
 
+- Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example
 - Building Systems with the ChatGPT API
 - Embeding hello world example
 - RAG Albert Einstein example

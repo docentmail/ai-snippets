@@ -1,11 +1,13 @@
 <p style="font-size: 26px;"> Generative AI exercises </p>
 
 The folder containing Generative AI exercises.\
-LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022
+LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
+gpt_4o_mini_complete OpenAI LLM, Graph-based RAG lightRAG framework, nano-vectordb Vector DB
 
 
 **Table of Contents**
 
+- [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](#graph-based-rag-lightrag-framework-with-gpt_4o_mini_complete-llm-example)
 - [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
 - [Experimenting with Anthropic's basic API use case.](#experimenting-with-anthropics-basic-api-use-case)
 - [Anthropic API Experiments](#anthropic-api-experiments)
@@ -13,6 +15,19 @@ LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic 
 - [Embeding hello world example](#embeding-hello-world-example)
 - [RAG Albert Einstein example](#rag-albert-einstein-example)
   - [Multimodal (text + image) LLM capabilities.](#multimodal-text--image-llm-capabilities)
+
+
+## [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](lightRAG_chatGPT/README.md)
+**This is an example of using lightRAG framework for Graph-based RAG.**\
+The example comprises of 
+- LightRAG installation and knowledge data preparation 
+
+and three main Python scripts.
+- Populates LightRAG graph representation 
+- Performs various types of queries 
+- Knowledge Graph Visualization
+
+gpt_4o_mini_complete OpenAI LLM, Graph-based RAG lightRAG framework, nano-vectordb Vector DB, Python
 
 
 ## [Run Anthropic Computer Use Demo locally in Docker](anthropic_computer_use_docker/README.md)
