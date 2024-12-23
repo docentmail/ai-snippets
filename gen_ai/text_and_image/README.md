@@ -34,7 +34,11 @@ Installation of Pyhon modules\
 Example 1. Using the OpenAI Python Client. Image is passed as a URL in WEB.
 
 **image_02.py**\
-Example 2. Using the OpenAI HTTP call. Image is passed as in request base64 URL.
+Example 2. (Python version) Using the OpenAI HTTP call. Image is passed as in request base64 URL.
+
+
+**image_02.html**\
+Example 2. (HTML version) Using the OpenAI HTTP call. Image is passed as in request base64 URL.
 
 **image_03.py**\
 Example 3. Using the OpenAI Python Client. Image is passed as in request base64 URL.\

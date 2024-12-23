@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 2. Using the OpenAI HTTP call. Image is passed as in request base64 URL.</title>
+ 
+</head>
+<body>
+
+    <div class="container">
+        <h1>Example 2. Using the OpenAI HTTP call. Image is passed as in request base64 URL.</h1>
+
+        <textarea id="statement" rows="4" cols="50" placeholder="Type your statement about the image here."></textarea>
+        <br/>
+        <button id="submitBtn">Submit</button>
+        <br/>
+        <input type="file" id="imageInput" accept="image/*">
+        <div id="imageContainer">
+            <img id="imagePreview" alt="Image preview" />
+            <canvas id="canvas"></canvas>
+        </div>
+        <br/>
+        <!--    Answer - true/false -->
+        LLM's decision. Your statement is <input type="text" id="resultTrueFalse"></input>
+        <br/>
+        <textarea id="resultJson"></textarea>
+        <div id="error" class="error" style="display: none;"></div>
+
+
+    </div>
+
+<script>
+    const imagePreview = document.getElementById("imagePreview");
+    const errorDiv = document.getElementById('error');
+    const statementTextarea = document.getElementById('statement');
+    const responseJson = document.getElementById('resultJson');
+    const resultTrueFalse = document.getElementById('resultTrueFalse');
+    const submitBtn = document.getElementById('submitBtn');
+
+    async function sendRequest() {
+        cleanResults();
+        const apiKey = getAPIKey();
+        let base64Image = await getBase64Image();
+        const statement = statementTextarea.value;
+        const responseJson = document.getElementById('resultJson');
+        const resultTrueFalse = document.getElementById('resultTrueFalse');
+
+        const systemMessage = "You will be provided with a picture and a statement from the user about this picture.\n" +
+            "You need to say is this statement true or not. You just need to give an answer in one word \"true\" or \"false\".\n" +
+            "The answer should not contain any additional comments or explanations";
+
+        let payload = {
+            "model": "gpt-4o-mini",
+            "messages": [
+                {'role':'system', 'content': systemMessage},   
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text":statement
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                            "url":  base64Image
+                            }
+                        }
+                    ]
+                }
+            ],
+            "max_tokens": 300
+        }
+
+
+
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error?.message || 'API request failed');
+            }
+
+
+/*
+{
+  "id": "chatcmpl-AhVyxJldPUDaLPl9eiwkMPV6id2t1",
+  "object": "chat.completion",
+  "created": 1734934407,
+  "model": "gpt-4o-mini-2024-07-18",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The image features two cats sitting side by side. One cat is black and white with a distinctive coat pattern, while the other cat is a solid orange color. They are both facing forward against a white background.",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 870,
+    "completion_tokens": 43,
+    "total_tokens": 913,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": "fp_d02d531b47"
+}
+*/
+
+            responseJson.value = JSON.stringify(data, null, 2);
+            resultTrueFalse.value = data.choices[0].message.content;
+
+        } catch (error) {
+            console.error('Error:', error);
+            showError(error.message || 'An error occurred');
+        } finally {
+            submitBtn.disabled = false;
+        }
+    }
+
+    function cleanResults() {
+        responseJson.value = '';
+        resultTrueFalse.value = '';
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+    }
+
+    function getAPIKey() {
+        let apiKey = localStorage.getItem("OPENAI_API_KEY");
+            if (!apiKey) {
+                apiKey = prompt("Please enter your OpenAI API key:");
+                if (apiKey) {
+                    localStorage.setItem("OPENAI_API_KEY", apiKey);
+                }
+            }
+            return apiKey;
+    }
+
+
+    async function getBase64Image() {        
+        return imagePreview.src;
+    }    
+
+    /**
+     * The readAsDataURL() method of the FileReader interface is used to read the contents of the specified Blob or File. 
+     * When the read operation is finished, the readyState property becomes DONE, and the loadend event is triggered. 
+     * At that time, the result attribute contains the data as a data: URL representing the file's data as a base64 encoded string.
+     */
+     function previewImage(event) {
+            cleanResults()
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('imagePreview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            playerContainer.style.display = 'none';
+        }
+
+
+    document.getElementById('imageInput').addEventListener('change', previewImage);
+    document.getElementById('submitBtn').addEventListener('click', sendRequest);
+
+
+
+
+
+
+
+</script>
+<style>
+    #canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    #imagePreview {
+        max-width: 100%;
+        display: none;
+        margin-top: 10px;
+    }
+    .error {
+            color: #cc0000;
+            margin: 10px 0;
+        }
+</style>
+
+</body>
+</html>
