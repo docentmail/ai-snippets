@@ -15,3 +15,4 @@ Utilites to draw boundary rectangles from JSON
 
 ### (Running/debugging Python file + venv in VS Code)(howto_jupyter_notebook_vscode/README.md)
 - Case 1: Python file; VS Code debugging; existing venv
+- Case 2: Open VS Code integrated terminal with active existing venv

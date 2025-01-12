@@ -1,4 +1,4 @@
-<p style="font-size: 26px;"> Set OS variables for Jupyter Notebook opened in VS Code </p>
+<p style="font-size: 26px;"> Jupyter Notebook in VS Code </p>
 
 # Table of Contents
 
