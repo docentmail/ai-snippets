@@ -12,3 +12,6 @@ Utilites to draw boundary rectangles from JSON
 - Use Environment variable in Jupyter Notebook
 - Get Jupyter Notebook running in VS Code
 - Debug Jupyter Notebook in VS Code
+
+### (Running/debugging Python file + venv in VS Code)(howto_jupyter_notebook_vscode/README.md)
+- Case 1: Python file; VS Code debugging; existing venv
