@@ -1,20 +1,34 @@
 <p style="font-size: 26px;"> Generative AI exercises </p>
 
-The folder containing Generative AI exercises.\
-LLM, RAG, Embedding, Prompt, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
-gpt_4o_mini_complete OpenAI LLM, Graph-based RAG lightRAG framework, nano-vectordb Vector DB
+The folder containing Generative AI exapmles.\
+LLM, RAG, Embedding, Prompt, Fine-tuning, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
+gpt_4o_mini_complete OpenAI LLM, Graph-based RAG lightRAG framework, nano-vectordb Vector DB\
+Hugging Face Transformers Library: Models (GPT2ForSequenceClassification), Tokenizer (GPT2Tokenizer), Trainer, Pipeline; Hugging Face Datasets Library; Hugging Face Evaluate Library; GPT-2 model;
 
 
 **Table of Contents**
-
+- [Fine-tuning GPT-2 for sentiment extraction example](#fine-tuning-gpt-2-for-sentiment-extraction-example)
 - [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](#graph-based-rag-lightrag-framework-with-gpt_4o_mini_complete-llm-example)
 - [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
-- [Experimenting with Anthropic's basic API use case.](#experimenting-with-anthropics-basic-api-use-case)
+- [Experimenting with Anthropic's basic API use case](#experimenting-with-anthropics-basic-api-use-case)
 - [Anthropic API Experiments](#anthropic-api-experiments)
-- [Building Systems with the ChatGPT API.   deeplearning.ai course   100% Completed](#building-systems-with-the-chatgpt-api-deeplearningai-course-100-completed)
-- [Embeding hello world example](#embeding-hello-world-example)
+- [Building Systems with the ChatGPT API](#building-systems-with-the-chatgpt-api)
+- [Embedding hello world example](#embedding-hello-world-example)
 - [RAG Albert Einstein example](#rag-albert-einstein-example)
-  - [Multimodal (text + image) LLM capabilities.](#multimodal-text--image-llm-capabilities)
+  - [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+
+
+## [Fine-tuning GPT-2 for sentiment extraction  example](fine_tuning_huggingface_gpt2/README.md)
+**What is in the folder**\
+This example demonstrates how to fine-tune GPT-2 from the Hugging Face Transformers library for a sequence classification task (e.g., sentiment analysis). It covers the full process of data preparation, model fine-tuning, evaluation, and inference.
+
+Used dataset:  tweet sentiment extraction from Hugging Face library.
+
+Fine-tuning mode: Full fine-tuning of the GPT-2 model for a sequence classification task. The Trainer is instantiated with the full model (GPT2ForSequenceClassification) without freezing any layers.
+
+**Technologies and frameworks used:**\
+Hugging Face Transformers Library: Models (GPT2ForSequenceClassification), Tokenizer (GPT2Tokenizer), Trainer, Pipeline; Hugging Face Datasets Library; Hugging Face Evaluate Library; GPT-2 model;  NumPy, Pandas
+
 
 
 ## [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](lightRAG_chatGPT/README.md)

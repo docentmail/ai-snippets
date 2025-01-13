@@ -14,13 +14,13 @@ Classical machine learning, Generative AI, Multi-agent Collaboration, Miscellane
 
 ## [Generative AI](gen_ai/README.md)
 
-The folder containing examples for the Generative AI.\
-Python, LLM, Chain of Thought Reasoning, Chaining Prompts, 
-Evaluation, OpenAI completions API, OpenAI Moderation API, Embeddings, text-embedding-3-small, gpt-3.5-turbo-instruct, gpt-4o-mini, gpt-4o, RAG, Vector DB, Langchain: RecursiveCharacterTextSplitter, OpenAIEmbeddings, Qdrant, Multimodal LLM.\
-Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
-Graph-based RAG lightRAG framework, nano-vectordb Vector DB
+The folder containing Generative AI exapmles.\
+LLM, RAG, Embedding, Prompt, Fine-tuning, OpenAI API, Vector DB, LangChain,Docker, Anthropic Api, Anthropic Computer Use, claude-3-5-sonnet-20241022\
+gpt_4o_mini_complete OpenAI LLM, Graph-based RAG lightRAG framework, nano-vectordb Vector DB\
+Hugging Face Transformers Library: Models (GPT2ForSequenceClassification), Tokenizer (GPT2Tokenizer), Trainer, Pipeline; Hugging Face Datasets Library; Hugging Face Evaluate Library; GPT-2 model;
 
 
+- Fine-tuning GPT-2 for sentiment extraction example
 - Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example
 - Building Systems with the ChatGPT API
 - Embeding hello world example
