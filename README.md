@@ -41,9 +41,14 @@ Python, numpy, pandas, GradientBoostingClassifier, LogisticRegression, sklearn.c
 ## [Experimenting with Multi-Agent Frameworks](agents/README.md)
 
 The folder containing experiments with various Multi-Agent Frameworks.\
-Multi-agent Collaboration, MetaGPT, Docker, Standardized Operating Procedures (SOPs), Code Generation
-
+- Implementing common agent workflows without any frameworks
 - Run methaGPT snake game generation in the Docker
+
+
+Multi-agent Collaboration, MetaGPT, Docker, Standardized Operating Procedures (SOPs), Code Generation;\
+Basic Building Blocks:Prompt Chaining, Routing, Multi-LLM Parallelization;\
+Advanced Workflows: Orchestrator-Subagents, Evaluator-Optimizer
+
 
 
 ## [Miscellaneous utilities](unplugged/README.md)
