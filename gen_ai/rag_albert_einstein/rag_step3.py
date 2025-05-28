@@ -24,7 +24,7 @@ doc_store = Qdrant.from_existing_collection(
 
 
 # ask questions
-llm = OpenAI(model_name='gpt-3.5-turbo-instruct')
+llm = OpenAI(model_name='gpt-3.5-turbo-instruct') 
 
 while True:
 
@@ -43,6 +43,44 @@ while True:
     )
 
     result = qa(question)
-    print(f"Answer: {result}")
+    def format_llm_answer(result: dict) -> str:
+        lines = ["""
+===================================================
+"""]
+
+        # 1. Question & Answer
+        question = result.get("question", "Unknown question")
+        answer = result.get("answer", "No answer provided").strip()
+
+        lines.append("📌 **Question:**")
+        lines.append(question)
+        lines.append("\n💡 **Answer:**")
+        lines.append(answer)
+
+        # 2. Sources
+        sources = result.get("sources")
+        if sources:
+            lines.append("\n🔗 **Source(s):**")
+            lines.append(f"- {sources}")
+
+        # 3. Source Documents
+        source_docs = result.get("source_documents", [])
+        if source_docs:
+            lines.append("\n📚 **Source Document Highlights:**")
+            for i, doc in enumerate(source_docs, 1):
+                title = doc.metadata.get("title", "Untitled")
+                snippet = doc.page_content.strip()[:300].replace("\n", " ")
+                lines.append(f"\n  {i}. **{title}**")
+                lines.append(f"     {snippet}...")
+        lines.append("""
+===================================================
+""")                
+
+        return "\n".join(lines)
+
+
+
+    print(f"{result}")
+    print(f"{format_llm_answer(result)}")
 
 

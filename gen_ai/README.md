@@ -7,15 +7,30 @@ Hugging Face Transformers Library: Models (GPT2ForSequenceClassification), Token
 
 
 **Table of Contents**
-- [Fine-tuning GPT-2 for sentiment extraction example](#fine-tuning-gpt-2-for-sentiment-extraction-example)
+- [Fine-tuning GPT-2 for sentiment extraction example](#fine-tuning-gpt-2-for-sentiment-extraction--example)
+- [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](#graph-based-rag-lightrag-framework-with-gpt_4o_mini_complete-llm-example)
+- [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
+- [Experimenting with Anthropic's basic API use case](#experimenting-with-anthropics-basic-api-use-case)
+- [Anthropic API Experiments](#anthropic-api-experiments)
+- [Building Systems with the ChatGPT API (deeplearning.ai course 100% Completed)](#building-systems-with-the-chatgpt-api-deeplearningai-course-100-completed)
+- [Embedding hello world example](#embedding-hello-world-example)
+- [RAG Albert Einstein example](#rag-albert-einstein-example)
+- [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+- [Fine-tuning GPT-2 for sentiment extraction example](#fine-tuning-gpt-2-for-sentiment-extraction--example)
 - [Graph-based RAG lightRAG framework with gpt_4o_mini_complete LLM example](#graph-based-rag-lightrag-framework-with-gpt_4o_mini_complete-llm-example)
 - [Run Anthropic Computer Use Demo locally in Docker](#run-anthropic-computer-use-demo-locally-in-docker)
 - [Experimenting with Anthropic's basic API use case](#experimenting-with-anthropics-basic-api-use-case)
 - [Anthropic API Experiments](#anthropic-api-experiments)
 - [Building Systems with the ChatGPT API](#building-systems-with-the-chatgpt-api)
-- [Embedding hello world example](#embedding-hello-world-example)
+- [Embedding hello world example](#embeding-hello-world-example)
 - [RAG Albert Einstein example](#rag-albert-einstein-example)
-  - [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+- [Multimodal (text + image) LLM capabilities](#multimodal-text--image-llm-capabilities)
+
+
+
+
+
+
 
 
 ## [Fine-tuning GPT-2 for sentiment extraction  example](fine_tuning_huggingface_gpt2/README.md)
@@ -71,7 +86,8 @@ The element on the current screenshot should correspont to the a marked with red
 
 Anthropic Api, Anthropic Computer Use, Python, claude-3-5-sonnet-20241022
 
-## [Building Systems with the ChatGPT API.](deeplearning_01/README.md) &nbsp;&nbsp;deeplearning.ai course &nbsp;&nbsp;<span style="color: green;">100% Completed</span>
+## [Building Systems with the ChatGPT API (deeplearning.ai course 100% Completed)](deeplearning_01/README.md) 
+**&nbsp;&nbsp;deeplearning.ai course &nbsp;&nbsp;<span style="color: green;">100% Completed</span>**
 Adopted examples from [Building Systems with the ChatGPT API](https://learn.deeplearning.ai/courses/chatgpt-building-system/) 
 [deeplearning.ai](https://learn.deeplearning.ai) course\
 Main topics:
